@@ -1,0 +1,33 @@
+XIII Marketplace — Operations/Admin increment verification
+Generated: 2026-10-05
+
+PASS:
+- Phase 1 foundation verifier
+- Payment verifier
+- Buyer Orders verifier
+- Seller Orders verifier
+- Seller Catalog verifier
+- Admin Product Review verifier
+- After Sales verifier
+- Reviews verifier
+- Realtime Chat + Notifications verifier
+- Seller Finance verifier
+- Seller Promotions verifier
+- Analytics verifier
+- CMS verifier
+- Access Control verifier
+- Users / Seller Applications / Shop Settings verifier
+- TypeScript/TSX parser-transpile scan across API + Buyer + Seller + Admin sources
+
+New verified areas:
+- Admin Users list/detail/status/verification routes and UI
+- Blocking clears refresh token and JWT strategy checks live account status
+- Seller Application list/detail/review/approve/reject routes and UI
+- Seller approval uses MongoDB transaction and creates Shop + SELLER role + OWNER member
+- Shop Settings is API-backed and protected by SHOP_SETTINGS
+- Active business-category validation and unique shop-slug generation
+- Seed includes pending seller applicant and blocked user for manual testing
+
+Not claimed:
+- Full dependency-based typecheck/build was not run because project dependencies are not installed in this generation environment.
+- Full Docker + MongoDB replica set + browser E2E runtime verification still needs to be run on a machine with dependencies installed.

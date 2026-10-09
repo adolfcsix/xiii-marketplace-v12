@@ -1,0 +1,205 @@
+{
+  "scope": "Local catalog/CMS/products/variants fixture; cart/Seller writes mocked. No real database, checkout, payment or product approval workflow run. SwiftShader renders WebGL.",
+  "before_fix": "Three outfit regression cases failed on v8: retained variant, unresolved draft references, and retry with an already-added sold-out item.",
+  "stats": {
+    "startTime": "2026-10-07T20:36:03.392Z",
+    "duration": 133722.711,
+    "expected": 36,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "unit_tests": {
+    "size": 4,
+    "session_client": 14,
+    "threeui_source_hashes": 3
+  },
+  "typecheck": "All four workspaces",
+  "production_build": "Buyer",
+  "static_verifiers": [
+    "seller-catalog",
+    "auth-session"
+  ],
+  "tests": [
+    {
+      "title": "Quick View selects a live variant, adds once and restores focus on Escape",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "Quick View recovers from fetch failure and size advice applies the shop chart",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "product size advice handles missing charts without inventing a size",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "outfit persists selected variants, totals live prices and retries only failed items",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "outfit detects changed prices before posting cart items",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "unavailable saved selections are explained and untouched drafts survive failed loading",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "outfit rejects duplicate variants and guests go to login with the draft intact",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "mobile outfit and Quick View fit and remain operable",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "Seller saves a chart without losing other attributes and rejects reversed ranges",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "editing an outfit item retains its selected variant",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "editing another slot preserves saved references that could not reload",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "retry ignores stock changes of items already added successfully",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "size selection is locked while a Quick View cart request is pending",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "pointer movement in Quick View does not tilt the card behind the modal",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "a stalled preview request times out with a retry message",
+      "file": "shopping-tools.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "product depth tracks mouse, clears on leave and preserves wishlist and navigation",
+      "file": "street-depth.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "global motion off and reduced motion neutralize depth",
+      "file": "street-depth.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "orb tuning changes actual shader glow and resets selected values",
+      "file": "street-depth.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "touch scrolling does not tilt cards and mobile controls fit",
+      "file": "street-depth.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "editorial depth leaves shopping links and product zoom usable",
+      "file": "street-depth.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "home renders a live catalog, new images and working collection filters",
+      "file": "street-ui.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "collection recovers from a failed request and stale replies cannot replace the chosen filter",
+      "file": "street-ui.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "motion can be paused, persists across reload, and follows reduced-motion settings",
+      "file": "street-ui.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "mobile home and both auth modes fit without yellow panels or hidden controls",
+      "file": "street-ui.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "ThreeUI renders locally, animates and does not block shopping links",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "turning motion off removes the renderer and keeps the preference on reload",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "offscreen and hidden pages release the frame and recreate it when visible",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "reduced motion skips the effect download; live preference changes remove it",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "unavailable decorative source leaves the catalog and navigation usable",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "mobile resizes the canvas without horizontal overflow or focusable decoration",
+      "file": "threeui-motion.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "3D orb draws WebGL pixels, changes palette and keeps its shopping link usable",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "pause, offscreen and hidden tab release the WebGL renderer",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "reduced motion uses the still sphere without loading the WebGL component",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "unsupported WebGL still leaves the sphere and controls usable",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "WebGL context loss falls back and can restart",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    },
+    {
+      "title": "3D section and controls fit a 320px screen",
+      "file": "threeui-orb.spec.ts",
+      "ok": true
+    }
+  ]
+}

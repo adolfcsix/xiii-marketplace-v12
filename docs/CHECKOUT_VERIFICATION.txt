@@ -1,0 +1,36 @@
+XIII Marketplace — Checkout / Orders implementation verification
+Date: 2026-10-05
+
+Implemented source markers verified:
+- POST /checkout/preview
+- POST /checkout/create
+- GET /orders
+- GET /orders/:orderCode
+- authenticated address validation
+- Standard / Express shipping fee calculation
+- platform voucher validation and usage tracking
+- MongoDB session.withTransaction order creation
+- atomic Inventory available -> reserved update
+- Master Order + SubOrder per shop
+- immutable Order Item snapshot fields
+- InventoryTransaction RESERVE audit row
+- OrderStatusHistory for master + suborders
+- cart cleared only inside successful transaction
+- Buyer /checkout UI
+- Buyer /order-success/:orderCode UI
+- Cart checkout button routes to /checkout
+- MongoDB Docker configuration upgraded to single-node replica set rs0
+
+Static verification completed:
+- API TypeScript parser/transpile verification: PASS
+- Buyer TS/TSX parser/transpile verification: PASS
+- required route/module marker verification: PASS
+
+Runtime limitation of generation environment:
+- Docker is not installed in this environment, so a live MongoDB transaction smoke test could not be executed here.
+- Full NestJS dependency-based build was not executed because project dependencies are not installed in the generation environment.
+- Run npm install, docker compose up -d, seed, typecheck and dev locally before treating runtime as verified.
+
+Current deliberate boundary:
+- COD is enabled end-to-end.
+- MoMo and VNPay UI options remain disabled until signed payment creation/webhook handling and reservation-expiry logic are implemented.

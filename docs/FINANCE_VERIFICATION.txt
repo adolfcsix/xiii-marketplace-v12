@@ -1,0 +1,14 @@
+XIII Marketplace — Seller Finance static verification
+
+PASS: finance module files and controller routes exist.
+PASS: Seller + Admin Finance TS/TSX parser/transpile verification.
+PASS: dynamic commission is read by Checkout instead of a hard-coded rate.
+PASS: completed SubOrders create idempotent settlement ledger entries.
+PASS: refunds create seller debit + proportional platform-fee reversal.
+PASS: withdrawal holds are deducted from withdrawable funds before ledger debit.
+PASS: concurrent withdrawal/refund accounting uses a shared shop financeVersion write lock inside MongoDB transactions.
+PASS: payout account numbers and immutable withdrawal payout snapshots use AES-256-GCM.
+PASS: Admin PAID transition requires an external reconciliation reference.
+PASS: all previous project static verifiers still pass.
+
+Full dependency-based TypeScript build/runtime E2E was NOT executed in the artifact environment because project npm dependencies are not installed there. `npm --workspace services/api run typecheck` therefore reports missing package/type declarations. This is not reported as a successful full build.

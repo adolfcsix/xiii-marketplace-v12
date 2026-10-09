@@ -1,0 +1,22 @@
+XIII Marketplace - Access Control / Audit verification
+
+Static/source verification performed in the artifact-generation environment:
+- Required access-control backend files: PASS
+- Shop permission markers and guards: PASS
+- Admin permission markers and SUPER_ADMIN bypass: PASS
+- Seller team UI routes/components: PASS
+- Admin roles and audit-log UI routes/components: PASS
+- Seller service migration to shop membership context: PASS
+- Global authenticated-mutation AuditInterceptor wiring: PASS
+- TypeScript/TSX transpile/parser scan across API + Buyer + Seller + Admin: PASS
+
+Latest access verifier result:
+Access-control verification passed: 19 required files, 35 behavior markers, 239 parsed sources.
+
+Legacy/module verifiers were also rerun after the access-control changes. One legacy Seller Orders verifier expected the old sellerId ownership implementation; it was updated to assert the new shopId/access-context ownership model and then passed.
+
+Full dependency-based typecheck/build: NOT VERIFIED.
+`npm --workspace services/api run typecheck` cannot complete in this generation environment because project dependencies/type packages (NestJS, Mongoose, RxJS, class-validator, @types/node, etc.) are not installed. The output therefore contains module-resolution errors and is not presented as a successful build.
+
+Full runtime/browser E2E: NOT VERIFIED.
+A real verification still requires npm install + MongoDB replica set + Redis (for the broader project) + the API/Next apps running together.

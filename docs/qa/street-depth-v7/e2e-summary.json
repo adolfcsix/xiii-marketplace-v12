@@ -1,0 +1,175 @@
+{
+  "scope": "Local catalog/CMS/product/variant fixtures; no real checkout, payment or database tests. Chromium WebGL through SwiftShader.",
+  "validation": "16 unchanged regression cases passed in the preceding run; all 5 depth cases passed in the final focused run after fixing selectors for streamed hidden DOM and waiting for reveal. Production implementation unchanged between runs.",
+  "passed": 21,
+  "tests": [
+    {
+      "title": "home renders a live catalog, new images and working collection filters",
+      "file": "street-ui.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "collection recovers from a failed request and stale replies cannot replace the chosen filter",
+      "file": "street-ui.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "motion can be paused, persists across reload, and follows reduced-motion settings",
+      "file": "street-ui.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "mobile home and both auth modes fit without yellow panels or hidden controls",
+      "file": "street-ui.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "ThreeUI renders locally, animates and does not block shopping links",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "turning motion off removes the renderer and keeps the preference on reload",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "offscreen and hidden pages release the frame and recreate it when visible",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "reduced motion skips the effect download; live preference changes remove it",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "unavailable decorative source leaves the catalog and navigation usable",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "mobile resizes the canvas without horizontal overflow or focusable decoration",
+      "file": "threeui-motion.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "3D orb draws WebGL pixels, changes palette and keeps its shopping link usable",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "pause, offscreen and hidden tab release the WebGL renderer",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "reduced motion uses the still sphere without loading the WebGL component",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "unsupported WebGL still leaves the sphere and controls usable",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "WebGL context loss falls back and can restart",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "3D section and controls fit a 320px screen",
+      "file": "threeui-orb.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "product depth tracks mouse, clears on leave and preserves wishlist and navigation",
+      "file": "street-depth.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "global motion off and reduced motion neutralize depth",
+      "file": "street-depth.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "orb tuning changes actual shader glow and resets selected values",
+      "file": "street-depth.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "touch scrolling does not tilt cards and mobile controls fit",
+      "file": "street-depth.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    },
+    {
+      "title": "editorial depth leaves shopping links and product zoom usable",
+      "file": "street-depth.spec.ts",
+      "ok": true,
+      "status": [
+        "expected"
+      ]
+    }
+  ]
+}

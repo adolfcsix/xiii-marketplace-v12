@@ -1,0 +1,2 @@
+import {StateSculpture} from '../components/state-sculpture';
+export default function Loading(){return <main className="home-shell loading-shell" aria-busy="true" aria-label="Đang tải trang"><StateSculpture kind="loading"/><p role="status">Đang chuẩn bị những món đồ dành cho bạn…</p><div className="skeleton skeleton-banner"/><div className="search-product-grid">{Array.from({length:8},(_,i)=><div key={i} className="skeleton skeleton-product"/>)}</div></main>}

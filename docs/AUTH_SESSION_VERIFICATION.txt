@@ -1,0 +1,28 @@
+XIII AUTH / SESSION VERIFICATION
+Generated in build workspace.
+
+Static/source verification performed:
+- Buyer/Seller/Admin logout calls POST /auth/logout before clearing local session: PASS
+- Server logout revokes refreshTokenHash: PASS
+- Access-token 401 refresh rotation has single-flight protection: PASS
+- Invalid/revoked refresh token clears local session: PASS
+- Buyer/Seller Socket.IO disconnect hook on session clear: PASS
+- Cross-tab session removal handling: PASS
+- Buyer account menu includes logout: PASS
+- Seller/Admin logout buttons use server-aware logout helper: PASS
+- Runtime smoke now verifies refresh token is rejected after logout: PASS (script structure)
+- Playwright auth-session E2E added: PASS (syntax/static structure)
+- 288 TS/TSX implementation files transpiled: 0 syntax failures
+
+All project verifiers from Phase 1 through Windows Local Runner were re-run and PASS at source/static level.
+
+Not executed in this workspace:
+- npm dependency-based full typecheck/build
+- Docker runtime
+- Playwright browser execution
+
+Run on the target Windows machine after starting XIII:
+  npm run runtime:smoke
+  .\\TEST_XIII_E2E_WINDOWS.bat
+
+The Playwright auth-session test verifies server-side refresh-token revocation, localStorage cleanup and expired-session redirect behavior.

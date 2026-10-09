@@ -1,0 +1,22 @@
+== tools/verify-phase1.mjs ==
+Phase 1 verification passed: 118 TypeScript files, 14 required modules.
+== tools/verify-payment.mjs ==
+Payment verification passed: 8 required files, 13 security/flow markers, 8 parsed sources.
+== tools/verify-orders.mjs ==
+Orders verification passed: 9 required files, 11 flow markers, 12 parsed sources.
+== tools/verify-seller-orders.mjs ==
+Seller orders verification passed: 13 required files, 14 flow/security markers, 39 parsed sources.
+== tools/verify-seller-catalog.mjs ==
+Seller catalog verification passed: 16 required files, 12 flow/security markers, 49 parsed sources.
+== tools/verify-admin-product-review.mjs ==
+Admin product review verification passed: 14 required files, 15 lifecycle/security markers, 36 parsed sources.
+== tools/verify-after-sales.mjs ==
+After-sales verification passed: 18 required files, 16 lifecycle/security markers, 203 parsed sources.
+== tools/verify-reviews.mjs ==
+Reviews verification passed: 12 required files, 13 lifecycle/security markers, 203 parsed sources.
+== tools/verify-realtime.mjs ==
+Realtime verification passed: 21 required files, JWT Socket.IO gateway, persisted chat/notifications, Buyer + Seller UI.
+== tools/verify-finance.mjs ==
+Finance verification passed: 10 required files, 16 accounting/security markers, 166 parsed sources.
+== tools/verify-promotions.mjs ==
+Promotions verification passed: 8 required files, 20 behavior markers, 203 parsed sources.

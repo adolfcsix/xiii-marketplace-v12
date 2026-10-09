@@ -1,0 +1,31 @@
+XIII Marketplace — Realtime Chat + Notifications verification
+
+Static/source verification completed in the generation environment:
+- npm run verify:phase1: PASS
+- npm run verify:payment: PASS
+- npm run verify:orders: PASS
+- npm run verify:seller-orders: PASS
+- npm run verify:seller-catalog: PASS
+- npm run verify:admin-products: PASS
+- npm run verify:after-sales: PASS
+- npm run verify:reviews: PASS
+- npm run verify:realtime: PASS
+- TypeScript/TSX parser/transpile check: PASS (187 files, 0 syntax failures)
+
+Realtime feature verification covers:
+- persisted Conversation + ChatMessage + Notification schemas
+- JWT-authenticated Socket.IO gateway namespace /realtime
+- user and conversation Socket.IO rooms
+- Buyer/Seller ownership checks
+- unread counts and mark-read flows
+- Buyer/Seller chat UI
+- Buyer/Seller notification UI
+- Product Detail -> Chat with shop entry point
+- domain notification hooks for checkout/orders/payments/returns/refunds/reviews
+- demo chat + notification seed data
+
+Important limitation:
+Full dependency-based build/runtime websocket E2E is NOT claimed in the generation environment because npm install did not complete before timeout. A full tsc run also reports pre-existing model-inference/type errors in older modules while dependencies/@types are unavailable. Run locally after npm install:
+  npm run verify:realtime
+  npm run typecheck
+  npm run dev

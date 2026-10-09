@@ -1,0 +1,104 @@
+name: XIII CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Static and domain verifiers
+        run: |
+          npm run verify:runtime-readiness
+          npm run verify:e2e
+          npm run verify:staging
+          npm run verify:phase1
+          npm run verify:payment
+          npm run verify:orders
+          npm run verify:seller-orders
+          npm run verify:seller-catalog
+          npm run verify:admin-products
+          npm run verify:after-sales
+          npm run verify:reviews
+          npm run verify:realtime
+          npm run verify:finance
+          npm run verify:promotions
+          npm run verify:analytics
+          npm run verify:cms
+          npm run verify:access
+          npm run verify:operations
+          npm run verify:admin-ops-settings
+          npm run verify:hardening
+      - name: Size advice and renderer source checks
+        run: |
+          npm run test:size
+          npm run test:threeui
+          npm run test:ai-artwork
+          npm run test:commerce
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+
+  docker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: verify-build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: api
+            dockerfile: docker/Dockerfile.api
+          - app: web
+            dockerfile: docker/Dockerfile.next
+          - app: seller
+            dockerfile: docker/Dockerfile.next
+          - app: admin
+            dockerfile: docker/Dockerfile.next
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production image
+        run: >-
+          docker build --file "${{ matrix.dockerfile }}"
+          --build-arg "APP=${{ matrix.app }}"
+          --build-arg NEXT_PUBLIC_API_URL=https://api.example.com/api/v1
+          --build-arg NEXT_PUBLIC_SOCKET_URL=https://api.example.com
+          --tag "xiii-ci-${{ matrix.app }}:${{ github.sha }}" .
+
+  browser-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    needs: verify-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Run full browser flow
+        run: npm run e2e:stack
+      - name: Upload Playwright artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7

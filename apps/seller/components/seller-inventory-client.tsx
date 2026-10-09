@@ -1,0 +1,37 @@
+'use client';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { hasSellerSession, sellerApi } from '../lib/client-api';
+import { SellerShell } from './seller-shell';
+
+type InventoryRow={_id:string;variantId:string;available:number;originalAvailable:number;reserved:number;sold:number;lowStockThreshold:number;updatedAt:string;variant:{_id:string;productId:string;sku:string;attributes:Record<string,string>;price:number;image:string;status:string};product:{_id:string;name:string;slug:string;images:string[];status:string}};
+type Data={items:InventoryRow[];meta:{page:number;limit:number;total:number;totalPages:number}};
+type Summary={skuCount:number;totalAvailable:number;totalReserved:number;totalSold:number;lowStock:number;outOfStock:number};
+type Tx={_id:string;type:string;quantity:number;beforeQuantity:number;afterQuantity:number;note?:string;createdAt:string};
+const money=(n:number)=>new Intl.NumberFormat('vi-VN').format(n)+'₫';
+const date=(v:string)=>new Intl.DateTimeFormat('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(v));
+const FILTERS=[['ALL','Tất cả'],['LOW','Sắp hết'],['OUT','Hết hàng'],['HEALTHY','Ổn định']];
+
+export function SellerInventoryClient(){
+  const [data,setData]=useState<Data|null>(null);const [summary,setSummary]=useState<Summary|null>(null);const [stock,setStock]=useState('ALL');const [query,setQuery]=useState('');const [search,setSearch]=useState('');const [page,setPage]=useState(1);const [loading,setLoading]=useState(true);const [error,setError]=useState('');const [notice,setNotice]=useState('');const [saving,setSaving]=useState('');const [historyId,setHistoryId]=useState('');const [history,setHistory]=useState<Tx[]>([]);
+  const load=useCallback(async()=>{if(!hasSellerSession()){window.location.href='/login?next=%2Finventory';return;}setLoading(true);setError('');try{const qs=new URLSearchParams({stock,page:String(page),limit:'30'});if(search)qs.set('q',search);const [list,sum]=await Promise.all([sellerApi<Data>('/seller/inventory?'+qs),sellerApi<Summary>('/seller/inventory/summary')]);setData({...list,items:list.items.map(r=>({...r,originalAvailable:r.available}))});setSummary(sum);}catch(e){setError(e instanceof Error?e.message:'Không tải được tồn kho');}finally{setLoading(false);}},[stock,page,search]);
+  useEffect(()=>{load();},[load]);
+  function submit(e:FormEvent){e.preventDefault();setPage(1);setSearch(query.trim());}
+  function editRow(id:string,field:'available'|'lowStockThreshold',value:number){setData(d=>d?{...d,items:d.items.map(r=>r._id===id?{...r,[field]:value}:r)}:d);}
+  async function save(row:InventoryRow){setSaving(row._id);setError('');setNotice('');try{await sellerApi('/seller/inventory/'+row.variantId,{method:'PATCH',body:JSON.stringify({available:Number(row.available),expectedAvailable:Number(row.originalAvailable),lowStockThreshold:Number(row.lowStockThreshold),note:'Seller điều chỉnh từ Inventory Center'})});setNotice(`Đã cập nhật tồn kho SKU ${row.variant.sku}.`);await load();}catch(e){setError(e instanceof Error?e.message:'Không cập nhật được tồn kho');}finally{setSaving('');}}
+  async function toggleHistory(row:InventoryRow){if(historyId===row._id){setHistoryId('');setHistory([]);return;}setHistoryId(row._id);setHistory([]);try{setHistory(await sellerApi<Tx[]>('/seller/inventory/'+row.variantId+'/history'));}catch(e){setError(e instanceof Error?e.message:'Không tải được lịch sử kho');}}
+  return <SellerShell active="inventory">
+    <section className="seller-page-head"><div><span>INVENTORY CENTER</span><h1>Kho hàng</h1><p>Quản lý `available` theo từng SKU; `reserved` được checkout giữ tự động.</p></div><a className="seller-secondary" href="/products">Quản lý sản phẩm</a></section>
+    <div className="seller-kpis seller-kpis-products">
+      <article><small>Tổng SKU</small><strong>{summary?.skuCount??'—'}</strong><span>Variant có Inventory</span></article>
+      <article><small>Có thể bán</small><strong>{summary?.totalAvailable??'—'}</strong><span>{summary?.totalReserved||0} sản phẩm đang reserve</span></article>
+      <article><small>Sắp hết</small><strong>{summary?.lowStock??'—'}</strong><span>Trên 0 nhưng ≤ threshold</span></article>
+      <article><small>Hết hàng</small><strong>{summary?.outOfStock??'—'}</strong><span>Cần nhập bổ sung</span></article>
+    </div>
+    <section className="seller-panel seller-catalog-panel">
+      <div className="seller-catalog-toolbar"><div className="seller-order-tabs">{FILTERS.map(([key,label])=><button key={key} className={stock===key?'active':''} onClick={()=>{setStock(key);setPage(1)}}>{label}{key==='LOW'&&<em>{summary?.lowStock||0}</em>}{key==='OUT'&&<em>{summary?.outOfStock||0}</em>}</button>)}</div><form onSubmit={submit} className="seller-search"><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Tên sản phẩm hoặc SKU…"/><button>Tìm</button></form></div>
+      {error&&<div className="seller-alert">{error}</div>}{notice&&<div className="seller-success">{notice}</div>}
+      {loading?<div className="seller-loading">Đang tải tồn kho…</div>:data?.items.length?<div className="seller-inventory-list">{data.items.map(row=>{const isOut=row.available===0;const isLow=!isOut&&row.available<=row.lowStockThreshold;return <article className="seller-inventory-row" key={row._id}><div className="seller-inventory-main"><img src={row.variant.image||row.product.images?.[0]||'/products/fallback.svg'} alt=""/><div className="seller-inventory-name"><a href={'/products/'+row.product._id}>{row.product.name}</a><span>{row.variant.sku} · {Object.values(row.variant.attributes||{}).filter(Boolean).join(' / ')||'Default'}</span><small>{money(row.variant.price)} · {row.variant.status}</small></div><div className="seller-stock-state"><span className={isOut?'out':isLow?'low':'healthy'}>{isOut?'Hết hàng':isLow?'Sắp hết':'Ổn định'}</span><small>{row.reserved} reserved · {row.sold} sold</small></div><label>Available<input type="number" min="0" step="1" value={row.available} onChange={e=>editRow(row._id,'available',Math.max(0,Number(e.target.value)))}/></label><label>Low-stock<input type="number" min="0" step="1" value={row.lowStockThreshold} onChange={e=>editRow(row._id,'lowStockThreshold',Math.max(0,Number(e.target.value)))}/></label><div className="seller-inventory-actions"><button className="seller-mini-primary" onClick={()=>save(row)} disabled={saving===row._id}>{saving===row._id?'Đang lưu…':'Lưu'}</button><button className="seller-mini-secondary" onClick={()=>toggleHistory(row)}>{historyId===row._id?'Đóng':'Lịch sử'}</button></div></div>{historyId===row._id&&<div className="seller-stock-history"><h3>Lịch sử biến động — {row.variant.sku}</h3>{history.length?history.map(tx=><div key={tx._id}><span className={'tx-type '+tx.type.toLowerCase()}>{tx.type}</span><b>{tx.quantity>0?'+':''}{tx.quantity}</b><span>{tx.beforeQuantity} → {tx.afterQuantity}</span><small>{date(tx.createdAt)}{tx.note?' · '+tx.note:''}</small></div>):<p>Chưa có giao dịch kho.</p>}</div>}</article>})}</div>:<div className="seller-empty"><h2>Không có SKU phù hợp</h2><p>Thử đổi bộ lọc hoặc tạo thêm SKU trong Product Editor.</p></div>}
+      {data&&data.meta.totalPages>1&&<div className="seller-pagination"><button disabled={page<=1} onClick={()=>setPage(p=>p-1)}>← Trước</button><span>Trang {page}/{data.meta.totalPages}</span><button disabled={page>=data.meta.totalPages} onClick={()=>setPage(p=>p+1)}>Sau →</button></div>}
+    </section>
+  </SellerShell>;
+}

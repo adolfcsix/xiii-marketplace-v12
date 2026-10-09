@@ -1,0 +1,62 @@
+import {expect,test,Route} from '@playwright/test';
+import {loginBuyer,URLS} from '../helpers/session';
+const ok=(route:Route,data:unknown)=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true,data})});
+const fail=(route:Route,message:string)=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({success:false,message})});
+const delay=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
+const order=(status:string)=>({_id:status,orderCode:'XIII-'+status,status,paymentMethod:'COD',paymentStatus:'PENDING',totalAmount:199000,createdAt:'2026-10-07T12:00:00Z',itemCount:1,subOrderCount:1,shops:[{_id:'shop',name:'XIII Studio',slug:'xiii',verified:true}],previewItems:[{_id:'item',productName:'Street Tee',image:'/street/tee-black.webp',quantity:1,totalPrice:199000}],canCancel:status==='CONFIRMED',canConfirmReceived:false});
+const orders=(status:string)=>({items:[order(status||'CONFIRMED')],meta:{page:1,limit:10,total:1,totalPages:1},statusCounts:{CONFIRMED:1,SHIPPED:1}});
+const ids=['aaaaaaaaaaaaaaaaaaaaaaaa','bbbbbbbbbbbbbbbbbbbbbbbb'];
+const conversations=ids.map((_id,i)=>({_id,lastMessage:'',lastMessageAt:'2026-10-07T12:00:00Z',unreadCount:0,shop:{name:i?'Shop B':'Shop A',verified:true}}));
+const message=(id:string,text:string,_id='message-'+id)=>({_id,conversationId:id,senderId:'buyer',senderRole:'BUYER',type:'TEXT',text,createdAt:'2026-10-07T12:00:00Z',readAt:null});
+async function chatFixture(page:import('@playwright/test').Page){
+ await page.routeWebSocket('**/socket.io/**',socket=>socket.close());
+ await loginBuyer(page);
+ await page.route('**/chat/conversations?**',route=>ok(route,{items:conversations,meta:{total:2}}));
+ await page.route('**/chat/conversations/*/read',route=>ok(route,{}));
+}
+test('orders restore URL filter, reject stale responses and recover from read failure',async({page})=>{
+ await loginBuyer(page);let slow=false,offline=false;
+ await page.route('**/api/v1/orders?**',async route=>{const status=new URL(route.request().url()).searchParams.get('status')||'';if(status==='CONFIRMED'){slow=true;await delay(600);}if(offline)return fail(route,'Đơn hàng tạm mất kết nối');await ok(route,orders(status));});
+ await page.goto(URLS.buyer+'/account/orders?status=SHIPPED');await expect(page.locator('.order-status')).toHaveText('Đang giao');await expect(page.locator('.orders-tabs button.active')).toContainText('Đang giao');
+ await page.locator('.orders-tabs').getByRole('button',{name:/Đã xác nhận/}).click();await expect.poll(()=>slow).toBe(true);await page.locator('.orders-tabs').getByRole('button',{name:/Đang giao/}).click();await expect(page.locator('.order-status')).toHaveText('Đang giao');await page.waitForTimeout(750);await expect(page.locator('.order-status')).toHaveText('Đang giao');
+ offline=true;await page.locator('.orders-tabs').getByRole('button',{name:'Tất cả',exact:true}).click();await expect(page.getByRole('heading',{name:'Chưa tải được đơn hàng',exact:true})).toBeVisible();await expect(page.locator('.order-card')).toHaveCount(0);
+ offline=false;await page.getByRole('button',{name:'Thử lại',exact:true}).click();await expect(page.locator('.order-card')).toHaveCount(1);await expect(page.locator('.orders-main').getByRole('alert')).toHaveCount(0);
+});
+test('order cancellation supports Escape, retains reason on failure and blocks duplicate submissions',async({page})=>{
+ await loginBuyer(page);await page.route('**/api/v1/orders?**',route=>ok(route,orders('CONFIRMED')));await page.goto(URLS.buyer+'/account/orders');await page.getByRole('button',{name:'Hủy đơn',exact:true}).click();const dialog=page.getByRole('dialog',{name:'Hủy đơn hàng?',exact:true});await expect(dialog.getByRole('button',{name:'Giữ đơn',exact:true})).toBeFocused();await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();
+ let writes=0;await page.route('**/orders/*/cancel',async route=>{writes++;await delay(180);await fail(route,'Chưa thể hủy đơn');});await page.getByRole('button',{name:'Hủy đơn',exact:true}).click();await dialog.getByLabel('Lý do hủy (không bắt buộc)').fill('Muốn đổi kích thước');await dialog.getByRole('button',{name:'Xác nhận hủy',exact:true}).evaluate((button:HTMLButtonElement)=>{button.click();button.click();button.click();});await expect(dialog.getByRole('alert')).toContainText('Chưa thể hủy đơn');expect(writes).toBe(1);await expect(dialog.getByLabel('Lý do hủy (không bắt buộc)')).toHaveValue('Muốn đổi kích thước');await expect(dialog.getByRole('button',{name:'Xác nhận hủy',exact:true})).toBeEnabled();if(process.env.XIII_PREVIEW_DIR)await page.screenshot({path:process.env.XIII_PREVIEW_DIR+'/order-cancel-v4.png',animations:'disabled'});await dialog.getByRole('button',{name:'Giữ đơn',exact:true}).click();
+});
+test('reviews ignore previous tab responses and offer a working retry after network errors',async({page})=>{
+ await loginBuyer(page);let slow=false,offline=false;
+ await page.route('**/reviews/mine?**',async route=>{const pending=new URL(route.request().url()).searchParams.get('status')==='PENDING';if(pending){slow=true;await delay(600);}if(offline)return fail(route,'Đánh giá tạm mất kết nối');await ok(route,{items:pending?[{_id:'pending',productName:'Pending Tee',order:{orderCode:'XIII-PENDING'}}]:[{_id:'review',rating:5,comment:'Đã đánh giá thành công',status:'VISIBLE',verifiedPurchase:true,product:{name:'Reviewed Tee',slug:'xiii-hoodie-gray'}}],meta:{total:1,page:1,totalPages:1}});});
+ await page.goto(URLS.buyer+'/account/reviews');await expect.poll(()=>slow).toBe(true);await page.getByRole('button',{name:'Đã đánh giá',exact:true}).click();await expect(page.locator('.review-list')).toContainText('Reviewed Tee');await page.waitForTimeout(750);await expect(page.locator('.review-list')).not.toContainText('Pending Tee');
+ offline=true;await page.getByRole('button',{name:'Chờ đánh giá',exact:true}).click();await expect(page.getByText('Chưa tải được đánh giá.',{exact:true})).toBeVisible();await expect(page.locator('.review-list')).toHaveCount(0);offline=false;await page.getByRole('button',{name:'Thử lại',exact:true}).click();await expect(page.locator('.review-list')).toContainText('Pending Tee');await expect(page.locator('.buyer-reviews').getByRole('alert')).toHaveCount(0);
+});
+test('chat changes threads without stale messages and preserves each thread draft',async({page})=>{
+ await chatFixture(page);let slow=false;
+ await page.route('**/chat/conversations/*/messages?**',async route=>{const id=route.request().url().includes(ids[0])?ids[0]:ids[1];if(id===ids[0]){slow=true;await delay(600);}await ok(route,{conversation:conversations[id===ids[0]?0:1],items:[message(id,id===ids[0]?'Tin nhắn A':'Tin nhắn B')],meta:{total:1}});});
+ await page.goto(URLS.buyer+'/account/messages');await expect.poll(()=>slow).toBe(true);const input=page.getByRole('textbox',{name:'Tin nhắn cho shop',exact:true});await input.fill('Nháp A');await page.locator('.chat-list').getByRole('button',{name:/Shop B/}).click();await expect(input).toHaveValue('');await input.fill('Nháp B');await expect(page.locator('.chat-messages')).toContainText('Tin nhắn B');await page.waitForTimeout(750);await expect(page.locator('.chat-messages')).not.toContainText('Tin nhắn A');await page.locator('.chat-list').getByRole('button',{name:/Shop A/}).click();await expect(input).toHaveValue('Nháp A');await expect(page.locator('.chat-messages')).toContainText('Tin nhắn A');await page.locator('.chat-list').getByRole('button',{name:/Shop B/}).click();await expect(input).toHaveValue('Nháp B');await expect(page.locator('.chat-messages')).toContainText('Tin nhắn B');
+});
+test('chat displays confirmed sends without socket, deduplicates rapid clicks and retains newer typing',async({page})=>{
+ await chatFixture(page);await page.route('**/chat/conversations/*/messages?**',route=>ok(route,{conversation:conversations[0],items:[],meta:{total:0}}));let writes=0,offline=false;
+ await page.route('**/chat/conversations/*/messages',async route=>{if(route.request().method()!=='POST')return route.continue();writes++;const text=route.request().postDataJSON().text;await delay(250);if(offline)return fail(route,'Gửi tin tạm thất bại');await ok(route,message(ids[0],text,'sent-'+writes));});
+ await page.goto(URLS.buyer+'/account/messages?conversation=invalid');const input=page.getByRole('textbox',{name:'Tin nhắn cho shop',exact:true});await expect(input).toBeVisible();await expect(page.locator('.chat-messages').getByRole('status')).toHaveCount(0);await input.fill('Gửi được khi socket ngắt');const send=page.getByRole('button',{name:'Gửi',exact:true});await send.evaluate((button:HTMLButtonElement)=>{button.click();button.click();button.click();});await input.fill('Nháp tin kế tiếp');await expect(page.locator('.chat-bubble p')).toHaveText(['Gửi được khi socket ngắt']);await expect(input).toHaveValue('Nháp tin kế tiếp');expect(writes).toBe(1);
+ offline=true;await send.click();await expect(page.locator('.chat-page').getByRole('alert')).toContainText('Gửi tin tạm thất bại');await expect(input).toHaveValue('Nháp tin kế tiếp');await expect(send).toBeEnabled();offline=false;await send.click();await expect(page.locator('.chat-bubble')).toHaveCount(2);await expect(input).toHaveValue('');expect(writes).toBe(3);await expect(page.locator('.chat-page').getByRole('alert')).toHaveCount(0);if(process.env.XIII_PREVIEW_DIR)await page.screenshot({path:process.env.XIII_PREVIEW_DIR+'/chat-v4.png',fullPage:true,animations:'disabled'});
+});
+
+test('mobile chat keeps long messages inside the viewport and conversations remain selectable',async({page})=>{
+ await chatFixture(page);await page.setViewportSize({width:390,height:844});await page.route('**/chat/conversations/*/messages?**',route=>{const id=route.request().url().includes(ids[0])?ids[0]:ids[1];return ok(route,{conversation:conversations[id===ids[0]?0:1],items:[message(id,'Tin nhắn dài '+ 'streetwear'.repeat(45))],meta:{total:1}});});
+ await page.goto(URLS.buyer+'/account/messages');await expect(page.locator('.chat-bubble')).toHaveCount(1);await page.getByRole('button',{name:'Hội thoại với Shop B',exact:true}).click();await expect(page.locator('.chat-thread>header')).toContainText('Shop B');await expect(page.locator('.chat-bubble')).toHaveCount(1);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.evaluate(()=>window.scrollTo(0,0));if(process.env.XIII_PREVIEW_DIR)await page.screenshot({path:process.env.XIII_PREVIEW_DIR+'/chat-mobile-v4.png',fullPage:true,animations:'disabled'});
+});
+
+test('authenticated account pages hydrate consistently on direct navigation',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));await loginBuyer(page);
+ for(const path of ['/account/orders','/account/returns','/account/orders/unknown-order','/payment-result?orderCode=unknown-order&provider=COD']){await page.goto(URLS.buyer+path,{waitUntil:'networkidle'});await expect(page.locator('main')).toBeVisible();}
+ expect(errors).toEqual([]);await page.evaluate(()=>{localStorage.removeItem('xiii_access');localStorage.removeItem('xiii_refresh');});await page.goto(URLS.buyer+'/account/orders');await expect(page.getByRole('heading',{name:'Đơn mua của bạn',exact:true})).toBeVisible();
+});
+test('dismissing the reason prompt in order detail never cancels the order',async({page})=>{
+ await loginBuyer(page);const code='XIII-PROMPT';let writes=0;
+ await page.route('**/api/v1/orders/'+code,route=>ok(route,{...order('CONFIRMED'),orderCode:code,shippingMethod:'STANDARD',subtotal:199000,shippingFee:0,discountAmount:0,shippingAddress:{recipientName:'Buyer',phone:'0900000000',addressLine:'Test',ward:'Test',district:'Test',province:'Test'},canPay:false,canConfirmReceived:false,payment:null,timeline:[],subOrders:[]}));
+ await page.route('**/orders/'+code+'/cancel',route=>{writes++;return ok(route,{});});await page.goto(URLS.buyer+'/account/orders/'+code);await expect(page.getByRole('heading',{name:code,exact:true})).toBeVisible();
+ page.on('dialog',async dialog=>{if(dialog.type()==='confirm')await dialog.accept();else await dialog.dismiss();});await page.getByRole('button',{name:'Hủy đơn',exact:true}).click();await expect(page.getByRole('button',{name:'Hủy đơn',exact:true})).toBeEnabled();expect(writes).toBe(0);await expect(page.locator('.order-detail-actions .order-status')).toHaveText('Đã xác nhận');
+});

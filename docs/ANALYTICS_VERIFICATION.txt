@@ -1,0 +1,15 @@
+XIII Marketplace — Analytics / Reports verification
+
+PASS: required analytics backend/frontend files present.
+PASS: Seller endpoint + SELLER/ADMIN RBAC markers.
+PASS: Admin endpoint + ADMIN/SUPER_ADMIN RBAC markers.
+PASS: date range capped at 366 days; Asia/Ho_Chi_Minh grouping.
+PASS: Product Detail writes PRODUCT_VIEW analytics events.
+PASS: Seller revenue/order/refund/view/inventory/finance aggregations present.
+PASS: Admin GMV/platform revenue/payment/top-shop/top-product/operations aggregations present.
+PASS: Seller + Admin CSV report export UI present.
+PASS: Admin overview switched to live analytics endpoint.
+PASS: TypeScript/TSX parser/transpile check across source.
+PASS: all prior phase verifiers still pass.
+
+Full dependency-aware typecheck/build and browser E2E were not executed in the generation environment. Run npm install, Docker services, typecheck, seed, and browser E2E locally before production use.

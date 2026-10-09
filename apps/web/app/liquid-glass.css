@@ -1,0 +1,65 @@
+/* XIII Liquid Edition. Material response inspired by ThreeUI; local renderer and
+   delegated interactions are original. Loaded after legacy raised-button rules. */
+html body#top :is(.street-button,.hero-secondary,.icon-link,.wishlist-button,.product-bag,.product-card-tools>button,.product-card-tools>a,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.auth-submit,.motion-toggle,.outfit-tabs button,.avatar-options button,.outfit-stage-toolbar button,.outfit-search button,.outfit-save button){
+ --glass-x:50%;--glass-y:20%;
+ position:relative;border-radius:999px;border:1px solid #ffffff52;
+ background-image:radial-gradient(ellipse at var(--glass-x) var(--glass-y),#ffffff45,transparent 65%),linear-gradient(155deg,#ffffff24,transparent 45%,#ffffff0a 75%,#ffffff28);
+ box-shadow:inset 0 1px 1px #ffffff80,inset 0 -1px 1px #00000025,0 5px 18px #00000016;
+ -webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);
+ transform:none;translate:none;scale:1;
+ transition:scale 420ms cubic-bezier(.2,.85,.25,1),translate 420ms cubic-bezier(.2,.85,.25,1),box-shadow 260ms ease,background-color 200ms ease,color 200ms ease,border-color 200ms ease;
+ touch-action:manipulation;
+}
+html body#top :is(.street-button.light,.icon-link,.product-card-tools>button,.product-card-tools>a,.wishlist-button){background-color:#ffffffb8;color:#17191c;border-color:#ffffffb0}
+html body#top :is(.street-button:not(.light),.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.auth-submit){background-color:#15181de8;color:#fff;border-color:#ffffff40}
+html body#top .wishlist-button.saved{background-color:#24272c;color:#fff;border-color:#ffffff80}
+html body#top :is(.outfit-tabs button,.avatar-options button)[aria-pressed=true]{background-color:#24272c;color:#fff;border-color:#ffffff75;box-shadow:inset 0 1px 1px #ffffff70,0 4px 14px #15181d25}
+html body#top :is(.hero-secondary,.motion-toggle){background-color:#ffffff15;color:#fff;padding:12px 19px;border-color:#ffffff52;min-height:44px}
+html body#top .street-button-shimmer::before{display:none}
+html body#top .icon-link{overflow:visible}
+html body#top .street-button:focus-visible,html body#top .hero-secondary:focus-visible{outline:3px solid #919ba8;outline-offset:4px}
+@media(hover:hover) and (pointer:fine){
+ html[data-motion=on] body#top :is(.street-button,.hero-secondary,.icon-link,.wishlist-button,.product-bag,.product-card-tools>button,.product-card-tools>a,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.auth-submit,.motion-toggle,.outfit-tabs button,.avatar-options button,.outfit-stage-toolbar button,.outfit-search button,.outfit-save button):not(:disabled):not([aria-disabled=true]):hover{
+  translate:0 -1px;scale:1.025;box-shadow:inset 0 1px 2px #ffffffb0,inset 0 -1px 1px #00000020,0 9px 24px #00000022;
+ }
+}
+html[data-motion=on] body#top :is(.street-button,.hero-secondary,.icon-link,.wishlist-button,.product-bag,.product-card-tools>button,.product-card-tools>a,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.auth-submit,.motion-toggle,.outfit-tabs button,.avatar-options button,.outfit-stage-toolbar button,.outfit-search button,.outfit-save button):not(:disabled):not([aria-disabled=true]):is(:active,[data-liquid-down=true]){
+ translate:0 1px;scale:.95 1.025;transform:none;transition-duration:100ms;box-shadow:inset 0 2px 8px #00000020,inset 0 1px 2px #ffffff75,0 2px 7px #00000012;
+}
+.liquid-hero{background:#101215;border-radius:26px}
+.liquid-hero .street-hero-media{opacity:.3;filter:grayscale(1)}
+.liquid-hero::after{background:linear-gradient(90deg,#080a0df5 5%,#080a0d85 57%,#080a0d20),linear-gradient(0deg,#080a0d,transparent 30%)}
+.liquid-hero .hero-spray{opacity:.12}
+.liquid-hero .street-hero-copy{max-width:65%;z-index:2}
+.liquid-hero h1{font-size:clamp(64px,6.5vw,104px);text-shadow:none;line-height:1.08}
+.liquid-hero .hero-line{overflow:visible}
+.liquid-hero .hero-line>span{text-shadow:none}
+.liquid-hero .hero-stamp{display:none}
+.liquid-sculpture{position:absolute;right:-2%;top:55px;bottom:68px;width:53%;pointer-events:none;z-index:0}
+.liquid-sculpture canvas{width:100%;height:100%;display:block;opacity:0;transition:opacity 650ms ease}
+.liquid-sculpture[data-ready=true] canvas{opacity:1}
+.liquid-coordinate{position:absolute;right:14%;top:8%;font:9px monospace;letter-spacing:.17em;color:#bbc2cb8a;writing-mode:vertical-rl}
+.liquid-fallback{position:absolute;inset:16%;transition:opacity 650ms ease}
+.liquid-fallback i{position:absolute;width:75%;aspect-ratio:1;border-radius:48% 52% 62% 38%;background:radial-gradient(ellipse at 28% 22%,#fff 0%,#adb6bf 8%,#1a1d23 35%,#090b0e 57%,#d6dfe7 82%,#555e69 90%,#161a20);box-shadow:inset 3px 3px 15px #ffffff70,16px 30px 45px #0005}
+.liquid-fallback i:nth-child(2){width:39%;right:0;top:-4%;rotate:30deg}
+.liquid-fallback i:nth-child(3){width:28%;right:-2%;bottom:8%;rotate:-20deg}
+.liquid-sculpture[data-ready=true] .liquid-fallback{opacity:0}
+.liquid-edit-card{position:absolute;right:7%;bottom:100px;z-index:3;display:flex;gap:18px;align-items:center;padding:12px 23px 12px 12px;border:1px solid #ffffff4a;border-radius:22px;background:linear-gradient(125deg,#ffffff25,#ffffff08);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:inset 0 1px 0 #ffffff55,0 20px 40px #0003;color:#fff;transform:perspective(800px) rotateY(-9deg) rotateZ(3deg);transition:transform 600ms cubic-bezier(.2,.8,.2,1),background 250ms ease}
+.liquid-edit-card img{width:90px;height:103px;object-fit:cover;border-radius:14px}
+.liquid-edit-card small{font:8px monospace;letter-spacing:.12em;color:#c8cdd5}
+.liquid-edit-card strong{display:block;font-size:20px;line-height:1.15;letter-spacing:-.04em;margin:9px 0}
+.liquid-edit-card em{font-size:10px;font-style:normal}
+html[data-motion=on] .liquid-edit-card:hover{transform:perspective(800px) rotateY(0) rotateZ(0) translateY(-5px);background-color:#ffffff10}
+.site-header{background:#f9f9f6de;-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
+.global-search{border-radius:999px;background:#ffffff90;box-shadow:inset 0 1px 3px #00000008}
+.global-search button{border-radius:0 999px 999px 0}
+.product-visual,.story-image{border-radius:18px}
+.product-card{--depth-x:0deg;--depth-y:0deg}
+.product-card-tools{gap:8px}
+.product-card-tools>a,.product-card-tools>button{min-height:40px}
+@media(max-width:1100px){.liquid-hero .street-hero-copy{max-width:75%}.liquid-hero h1{font-size:clamp(56px,7.1vw,82px)}.liquid-edit-card{right:4%;bottom:95px;padding-right:16px;gap:10px}.liquid-edit-card img{width:66px;height:80px}.liquid-edit-card strong{font-size:16px}}
+@media(max-width:750px){.liquid-hero{border-radius:20px}.liquid-hero .street-hero-copy{max-width:100%;padding-top:130px}.liquid-hero h1{font-size:clamp(46px,11.3vw,76px)}.liquid-sculpture{width:80%;right:-23%;top:25px;bottom:100px;opacity:.6;z-index:-1}.liquid-hero::after{background:linear-gradient(90deg,#080a0df0,#080a0d30),linear-gradient(0deg,#080a0d,transparent)}.liquid-edit-card{display:none}.liquid-coordinate{display:none}.liquid-hero .hero-actions{gap:12px;flex-wrap:wrap}.liquid-hero .hero-secondary{font-size:10px;padding:12px 14px}.liquid-hero .street-button{gap:12px}}
+html[data-motion=off] body#top :is(.street-button,.hero-secondary,.icon-link,.wishlist-button,.product-bag,.product-card-tools>button,.product-card-tools>a,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.auth-submit,.motion-toggle,.outfit-tabs button,.avatar-options button,.outfit-stage-toolbar button,.outfit-search button,.outfit-save button){translate:none;scale:none;transform:none;transition:none}
+html[data-motion=off] .liquid-edit-card{transform:none;transition:none}
+@media(prefers-reduced-motion:reduce){.liquid-sculpture canvas,.liquid-fallback{transition:none}.liquid-edit-card{transform:none!important;transition:none!important}}
+@supports not (backdrop-filter:blur(1px)){html body#top :is(.hero-secondary,.motion-toggle){background-color:#252931}.liquid-edit-card{background:#252931}}

@@ -1,0 +1,232 @@
+{
+  "version": "v11",
+  "stats": {
+    "startTime": "2026-10-07T22:02:37.833Z",
+    "duration": 237277.31,
+    "expected": 48,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "environment": {
+    "browser": "Chromium",
+    "webgl": "SwiftShader software GPU",
+    "data": "local catalog fixture and mocked cart writes"
+  },
+  "checks": {
+    "unit_and_source_hash": 7,
+    "typecheck": "all four workspaces passed",
+    "production_build": "Buyer web passed"
+  },
+  "tests": [
+    {
+      "title": "campaign layers have different offsets and reset with motion off",
+      "status": "expected"
+    },
+    {
+      "title": "depth carousel uses actual adjacent photos and preserves lightbox keyboard navigation",
+      "status": "expected"
+    },
+    {
+      "title": "mobile swipe changes photo without opening lightbox or blocking vertical scroll",
+      "status": "expected"
+    },
+    {
+      "title": "Quick View flight waits for success, sits above dialog and keeps focus and cleanup",
+      "status": "expected"
+    },
+    {
+      "title": "failed cart write has no flight and retry still adds once",
+      "status": "expected"
+    },
+    {
+      "title": "reduced motion has static gallery and no cart flight",
+      "status": "expected"
+    },
+    {
+      "title": "outfit composition focuses selected SKU, preserves saved data and fits mobile",
+      "status": "expected"
+    },
+    {
+      "title": "outfit partial success celebrates only successful writes and retry skips them",
+      "status": "expected"
+    },
+    {
+      "title": "Quick View selects a live variant, adds once and restores focus on Escape",
+      "status": "expected"
+    },
+    {
+      "title": "Quick View recovers from fetch failure and size advice applies the shop chart",
+      "status": "expected"
+    },
+    {
+      "title": "product size advice handles missing charts without inventing a size",
+      "status": "expected"
+    },
+    {
+      "title": "outfit persists selected variants, totals live prices and retries only failed items",
+      "status": "expected"
+    },
+    {
+      "title": "outfit detects changed prices before posting cart items",
+      "status": "expected"
+    },
+    {
+      "title": "unavailable saved selections are explained and untouched drafts survive failed loading",
+      "status": "expected"
+    },
+    {
+      "title": "outfit rejects duplicate variants and guests go to login with the draft intact",
+      "status": "expected"
+    },
+    {
+      "title": "mobile outfit and Quick View fit and remain operable",
+      "status": "expected"
+    },
+    {
+      "title": "Seller saves a chart without losing other attributes and rejects reversed ranges",
+      "status": "expected"
+    },
+    {
+      "title": "editing an outfit item retains its selected variant",
+      "status": "expected"
+    },
+    {
+      "title": "editing another slot preserves saved references that could not reload",
+      "status": "expected"
+    },
+    {
+      "title": "retry ignores stock changes of items already added successfully",
+      "status": "expected"
+    },
+    {
+      "title": "size selection is locked while a Quick View cart request is pending",
+      "status": "expected"
+    },
+    {
+      "title": "pointer movement in Quick View does not tilt the card behind the modal",
+      "status": "expected"
+    },
+    {
+      "title": "a stalled preview request times out with a retry message",
+      "status": "expected"
+    },
+    {
+      "title": "product depth tracks mouse, clears on leave and preserves wishlist and navigation",
+      "status": "expected"
+    },
+    {
+      "title": "global motion off and reduced motion neutralize depth",
+      "status": "expected"
+    },
+    {
+      "title": "orb tuning changes actual shader glow and resets selected values",
+      "status": "expected"
+    },
+    {
+      "title": "touch scrolling does not tilt cards and mobile controls fit",
+      "status": "expected"
+    },
+    {
+      "title": "editorial depth leaves shopping links and product zoom usable",
+      "status": "expected"
+    },
+    {
+      "title": "ThreeUI renders locally, animates and does not block shopping links",
+      "status": "expected"
+    },
+    {
+      "title": "turning motion off removes the renderer and keeps the preference on reload",
+      "status": "expected"
+    },
+    {
+      "title": "offscreen and hidden pages release the frame and recreate it when visible",
+      "status": "expected"
+    },
+    {
+      "title": "reduced motion skips the effect download; live preference changes remove it",
+      "status": "expected"
+    },
+    {
+      "title": "unavailable decorative source leaves the catalog and navigation usable",
+      "status": "expected"
+    },
+    {
+      "title": "mobile resizes the canvas without horizontal overflow or focusable decoration",
+      "status": "expected"
+    },
+    {
+      "title": "mobile auto caps the real framebuffer to 1x while drawing the original sphere shader",
+      "status": "expected"
+    },
+    {
+      "title": "quality switching resizes the same GPU program and survives reload",
+      "status": "expected"
+    },
+    {
+      "title": "speed changes and pause/resume keep shader phase continuous",
+      "status": "expected"
+    },
+    {
+      "title": "mouse interaction rotates the shader surface and eases back to center on leaving",
+      "status": "expected"
+    },
+    {
+      "title": "light mode limits actual shader draw calls and leaves shopping controls operable",
+      "status": "expected"
+    },
+    {
+      "title": "opening Quick View clears depth immediately without needing another pointer movement",
+      "status": "expected"
+    },
+    {
+      "title": "Constellation light mode caps retina buffers and throttles the authored Canvas loop",
+      "status": "expected"
+    },
+    {
+      "title": "unmounted Orb contexts are released and deliberate pause does not trigger a retry error",
+      "status": "expected"
+    },
+    {
+      "title": "3D orb draws WebGL pixels, changes palette and keeps its shopping link usable",
+      "status": "expected"
+    },
+    {
+      "title": "pause, offscreen and hidden tab release the WebGL renderer",
+      "status": "expected"
+    },
+    {
+      "title": "reduced motion uses the still sphere without loading the WebGL component",
+      "status": "expected"
+    },
+    {
+      "title": "unsupported WebGL still leaves the sphere and controls usable",
+      "status": "expected"
+    },
+    {
+      "title": "WebGL context loss falls back and can restart",
+      "status": "expected"
+    },
+    {
+      "title": "3D section and controls fit a 320px screen",
+      "status": "expected"
+    }
+  ],
+  "measurements": {
+    "mobile-framebuffer": {
+      "width": 309,
+      "height": 309,
+      "cssWidth": 309,
+      "cssHeight": 309,
+      "limit": 160000,
+      "fps": 30,
+      "originalPixels": 381924,
+      "currentPixels": 95481
+    },
+    "light-draws": {
+      "durationMs": 650,
+      "draws": 20,
+      "limitFps": 30
+    }
+  }
+}

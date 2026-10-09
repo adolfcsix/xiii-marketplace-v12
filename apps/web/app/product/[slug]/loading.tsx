@@ -1,0 +1,3 @@
+import {StateSculpture} from '../../../components/state-sculpture';
+import {SiteHeader} from '../../../components/site-header';
+export default function ProductLoading(){return <><SiteHeader/><main className="product-detail-shell route-skeleton" aria-busy="true" aria-label="Đang tải chi tiết sản phẩm"><div className="skeleton skeleton-line"/><StateSculpture kind="loading"/><p role="status">Đang mở món đồ bạn chọn…</p><div className="detail-main-grid"><div className="skeleton skeleton-gallery"/><section><div className="skeleton skeleton-title"/><div className="skeleton skeleton-line"/><div className="skeleton skeleton-price"/>{Array.from({length:3},(_,i)=><div key={i} className="skeleton skeleton-option"/>)}</section></div></main></>}

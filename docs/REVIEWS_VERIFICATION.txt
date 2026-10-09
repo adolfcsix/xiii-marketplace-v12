@@ -1,0 +1,13 @@
+XIII Marketplace Reviews verification
+Generated: 2026-10-05
+
+Reviews verification passed: 12 required files, 13 lifecycle/security markers, 165 parsed sources.
+After-sales verification passed: 18 required files, 16 lifecycle/security markers, 165 parsed sources.
+Admin product review verification passed: 14 required files, 15 lifecycle/security markers, 30 parsed sources.
+Seller catalog verification passed: 16 required files, 12 flow/security markers, 40 parsed sources.
+Seller orders verification passed: 13 required files, 14 flow/security markers, 30 parsed sources.
+Orders verification passed: 9 required files, 11 flow markers, 12 parsed sources.
+Payment verification passed: 8 required files, 13 security/flow markers, 8 parsed sources.
+Phase 1 verification passed: 96 TypeScript files, 14 required modules.
+
+NOTE: full npm typecheck was attempted but dependencies/@types are not installed in this generated workspace, so module/type resolution fails before a valid full build can be established.

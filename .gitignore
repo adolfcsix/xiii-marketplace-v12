@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+.env
+.env.local
+coverage
+*.log
+.DS_Store
+
+# Playwright E2E output
+/playwright-report/
+/test-results/
+/blob-report/
+.env.staging
+.deploy/

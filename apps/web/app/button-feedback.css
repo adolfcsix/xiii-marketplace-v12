@@ -1,0 +1,35 @@
+/* Compositor-only movement: no event listeners, layout shifts or idle loops. */
+html body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link):not(.gallery-open):not(.outfit-empty):not([data-depth]) {
+  touch-action:manipulation;
+  transition:translate 180ms cubic-bezier(.2,.8,.2,1),scale 180ms cubic-bezier(.2,.8,.2,1),box-shadow 180ms ease,background-color 140ms ease,color 140ms ease,border-color 140ms ease,opacity 140ms ease,transform 180ms ease;
+}
+html body button:not(:disabled):not([aria-disabled=true]){cursor:pointer}
+@media(hover:hover) and (pointer:fine){
+  html[data-motion=on] body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link):not(.gallery-open):not(.outfit-empty):not([data-depth]):not(:disabled):not([aria-disabled=true]):hover {
+    translate:0 -2px;
+    box-shadow:0 3px 0 #1112,0 8px 16px #1111;
+  }
+  html[data-motion=on] body :is(.street-button,.detail-add,.detail-buy,.product-bag):not(:disabled):hover>svg{translate:2px 0}
+}
+html[data-motion=on] body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link):not(.gallery-open):not(.outfit-empty):not([data-depth]):not(:disabled):not([aria-disabled=true]):active {
+  translate:0 1px;
+  scale:.97;
+  box-shadow:inset 0 2px 4px #1112;
+  transition-duration:65ms;
+}
+body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link):focus-visible{outline:3px solid #55720b;outline-offset:4px}
+body :is(.street-button,.detail-add,.detail-buy,.product-bag)>svg{transition:translate 180ms ease}
+body button[aria-busy=true]{cursor:wait;opacity:.8}
+body button[aria-busy=true]::after{content:"";display:inline-block;flex-shrink:0;width:14px;height:14px;margin-inline-start:8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%}
+html[data-motion=on] body button[aria-busy=true]::after{animation:button-wait 700ms linear infinite}
+@keyframes button-wait{to{rotate:360deg}}
+@media(pointer:coarse){
+  body :is(.wishlist-button,.product-bag,.icon-link,.gallery-toolbar button,.detail-qty-row button,.detail-size-options button){min-width:44px;min-height:44px}
+}
+/* The motion preference also applies to the existing transform-based presses. */
+html[data-motion=off] body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link):not(.gallery-open):not(.outfit-empty):not([data-depth]){translate:none;scale:none;transition-duration:0ms}
+html[data-motion=off] body :is(.wishlist-button,.detail-add,.detail-buy,.checkout-place,.cart-checkout):active{transform:none}
+@media(prefers-reduced-motion:reduce){
+  html body :is(button,.street-button,.hero-cta,.product-bag,.cart-checkout,.cart-primary-link,.icon-link){translate:none!important;scale:none!important}
+  body button[aria-busy=true]::after{animation:none!important}
+}

@@ -1,0 +1,32 @@
+XIII Marketplace — After Sales verification
+Generated: 2026-10-05
+
+Static/source verification performed in generation environment:
+- Phase 1 verification: PASS
+- Payment verification: PASS
+- Buyer Orders verification: PASS
+- Seller Orders verification: PASS
+- Seller Catalog verification: PASS
+- Admin Product Review verification: PASS
+- After Sales verification: PASS
+- TypeScript/TSX parser-transpile across API + Buyer + Seller + Admin: PASS
+
+After-sales implementation markers verified:
+- Buyer ownership-scoped return APIs
+- Seller ownership-scoped return APIs
+- Admin RBAC on dispute/refund APIs
+- 7-day return window
+- Item-level quantity validation
+- server-side refundable amount calculation
+- partial-return aware order/suborder status handling
+- MongoDB transaction usage
+- return inventory ledger mutation
+- dispute resolution flow
+- refund PENDING -> PROCESSING -> SUCCEEDED/FAILED
+- external reconciliation reference required before success
+- cumulative Order/Payment refundedAmount
+- PARTIALLY_REFUNDED vs REFUNDED accounting
+- seeded completed order for immediate return testing
+
+Important limitation:
+A full dependency-based NestJS/Next.js build and browser E2E run were NOT executed in the generation environment because project npm dependencies are not installed here. MoMo/VNPAY refund APIs are also NOT automatically called by this phase. Admin must first complete/verify the real external refund and then record its reference; XIII only changes payment/refund status after that confirmation.

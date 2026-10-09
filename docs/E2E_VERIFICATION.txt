@@ -1,0 +1,28 @@
+XIII Marketplace — Browser E2E verification snapshot
+
+Implemented:
+- Playwright Chromium configuration.
+- Critical serial Browser E2E flow: Buyer → Checkout COD → Seller fulfilment → Buyer completion/review → Admin verification.
+- Unauthenticated Buyer/Seller/Admin protection smoke tests.
+- Cross-platform Node one-shot orchestrator: tools/e2e-stack.mjs.
+- Deterministic reseed cleanup for demo buyer customer reviews.
+- Failure artifacts: trace/screenshot/video + HTML report.
+
+Static verification performed in generation environment:
+- All existing project verifiers: PASS.
+- verify:e2e: PASS.
+- E2E TS/TSX syntax transpile: PASS (4 files, 0 errors).
+- Runtime-readiness static checks: PASS, with expected missing package-lock warning.
+
+Runtime boundary in generation environment:
+- Docker: unavailable (`docker: command not found`).
+- npm registry: unavailable due DNS EAI_AGAIN for registry.npmjs.org.
+- Therefore @playwright/test / Chromium could not be installed here.
+- Therefore the browser suite itself has NOT been executed in this generation environment.
+
+Authoritative runtime command on a machine with prerequisites:
+  npm install
+  npm run e2e:install
+  npm run e2e:stack
+
+A successful `npm run e2e:stack` is the evidence that the critical browser flow actually passes end-to-end on that runtime.

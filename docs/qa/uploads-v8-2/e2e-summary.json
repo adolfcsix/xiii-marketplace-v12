@@ -1,0 +1,174 @@
+{
+  "scope": "local API fixture and mock storage; no real customer data or S3 writes",
+  "stats": {
+    "startTime": "2026-10-07T20:50:52.515Z",
+    "duration": 62058.443999999996,
+    "expected": 23,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Seller corrects empty MIME and mismatched suffix without changing bytes; allows selecting same file again",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Seller retains successful files and continues after invalid files in a batch",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Seller rejects corrupt, HEIC and oversized input before presign",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Seller reports storage failure and permits retry",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Admin applies banner, mobile banner, category and brand images to the correct fields and purposes",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "all five supported formats decode and preserve their complete original bytes, including animated GIF",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Admin enforces per-purpose category and brand size limits before requesting storage",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "saving and changing the Admin upload destination stay locked until the image finishes",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Quick View selects a live variant, adds once and restores focus on Escape",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Quick View recovers from fetch failure and size advice applies the shop chart",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "product size advice handles missing charts without inventing a size",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "outfit persists selected variants, totals live prices and retries only failed items",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "outfit detects changed prices before posting cart items",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "unavailable saved selections are explained and untouched drafts survive failed loading",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "outfit rejects duplicate variants and guests go to login with the draft intact",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "mobile outfit and Quick View fit and remain operable",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "Seller saves a chart without losing other attributes and rejects reversed ranges",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "editing an outfit item retains its selected variant",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "editing another slot preserves saved references that could not reload",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "retry ignores stock changes of items already added successfully",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "size selection is locked while a Quick View cart request is pending",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "pointer movement in Quick View does not tilt the card behind the modal",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    },
+    {
+      "title": "a stalled preview request times out with a retry message",
+      "ok": true,
+      "results": [
+        "passed"
+      ]
+    }
+  ]
+}

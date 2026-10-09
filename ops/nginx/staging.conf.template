@@ -1,0 +1,60 @@
+map $http_upgrade $connection_upgrade { default upgrade; '' close; }
+map $http_x_forwarded_proto $xiii_forwarded_proto { default $http_x_forwarded_proto; '' $scheme; }
+
+upstream xiii_web { server web:3000; }
+upstream xiii_seller { server seller:3000; }
+upstream xiii_admin { server admin:3000; }
+upstream xiii_api { server api:4000; }
+
+server {
+  listen 80 default_server;
+  server_name _;
+  location = /healthz { access_log off; add_header Content-Type text/plain; return 200 'ok'; }
+  location / { return 404; }
+}
+
+server {
+  listen 80;
+  server_name ${STAGING_WEB_HOST};
+  client_max_body_size 2m;
+  location / { proxy_pass http://xiii_web; include /etc/nginx/proxy_params; proxy_set_header X-Forwarded-Proto $xiii_forwarded_proto; }
+}
+
+server {
+  listen 80;
+  server_name ${STAGING_SELLER_HOST};
+  client_max_body_size 2m;
+  location / { proxy_pass http://xiii_seller; include /etc/nginx/proxy_params; proxy_set_header X-Forwarded-Proto $xiii_forwarded_proto; }
+}
+
+server {
+  listen 80;
+  server_name ${STAGING_ADMIN_HOST};
+  client_max_body_size 2m;
+  location / { proxy_pass http://xiii_admin; include /etc/nginx/proxy_params; proxy_set_header X-Forwarded-Proto $xiii_forwarded_proto; }
+}
+
+server {
+  listen 80;
+  server_name ${STAGING_API_HOST};
+  client_max_body_size 2m;
+
+  location /socket.io/ {
+    proxy_pass http://xiii_api;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $xiii_forwarded_proto;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_read_timeout 75s;
+  }
+
+  location / {
+    proxy_pass http://xiii_api;
+    include /etc/nginx/proxy_params;
+    proxy_set_header X-Forwarded-Proto $xiii_forwarded_proto;
+  }
+}

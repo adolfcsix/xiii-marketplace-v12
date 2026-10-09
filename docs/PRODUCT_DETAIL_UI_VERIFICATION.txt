@@ -1,0 +1,24 @@
+XIII Product Detail UI verification scope
+
+Implemented route:
+- apps/web/app/product/[slug]/page.tsx
+- apps/web/components/product-detail-client.tsx
+
+Backend upgrades used by the screen:
+- GET /products/:slug returns product + shop/category/brand summary
+- GET /products/:productId/variants returns SKU + public inventory availability
+- seed creates multiple color/size SKUs for selected demo products
+
+Product Detail UI includes:
+- gallery
+- dynamic price and sale percentage
+- color/size SKU selection
+- stock availability
+- quantity control
+- shop summary
+- product specs
+- rating summary
+- category-related products
+
+Phase boundary:
+- Cart persistence, checkout and payments are not implemented in Phase 1.

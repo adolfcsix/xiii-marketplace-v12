@@ -1,0 +1,67 @@
+XIII MARKETPLACE — RUNTIME INTEGRATION VERIFICATION
+Generated during the runtime-integration hardening pass.
+
+WHAT WAS ACTUALLY EXECUTED
+- Node.js: v22.16.0 — PASS
+- npm: 10.9.2 — PASS
+- Existing domain/source verifiers — PASS
+- Runtime-readiness static verifier — PASS
+- Local import resolution scan — PASS
+- External import vs package.json dependency scan — PASS
+- Next.js 15 App Router async params/searchParams scan — PASS after fixes
+- JavaScript syntax check for runtime tooling — PASS
+
+BUILD/RUNTIME BLOCKERS IN THE GENERATION ENVIRONMENT
+- Docker executable: unavailable
+- Docker Compose: unavailable
+- registry.npmjs.org DNS lookup: EAI_AGAIN
+- npm install therefore cannot complete
+- node_modules is not available
+- package-lock.json cannot be generated honestly without a successful install
+
+npm install was attempted. npm reached dependency resolution and failed to reach
+https://registry.npmjs.org with EAI_AGAIN. This is an environment/network failure,
+not a successful dependency-aware build.
+
+FIXES MADE DURING THIS PASS
+Next.js 15 expects App Router page params/searchParams to be asynchronous. Five pages
+still used the older synchronous prop shape and were corrected:
+- apps/web/app/account/returns/[requestCode]/page.tsx
+- apps/web/app/account/returns/new/page.tsx
+- apps/seller/app/returns/[requestCode]/page.tsx
+- apps/admin/app/payments/[paymentCode]/page.tsx
+- apps/admin/app/orders/[orderCode]/page.tsx
+
+NEW RUNTIME TOOLING
+- npm run verify:runtime-readiness
+- npm run runtime:preflight
+- npm run runtime:smoke
+- docs/RUNTIME_INTEGRATION.md
+
+RUNTIME CLAIM BOUNDARY
+This archive is more runtime-ready than the previous archive, but it is NOT marked as
+full runtime/E2E verified. The following still require a machine with working npm
+registry access and Docker:
+- npm install / npm ci
+- full npm run typecheck
+- full npm run build
+- MongoDB replica-set startup and transaction execution
+- Redis runtime
+- MinIO presigned upload round trip
+- NestJS API boot
+- Buyer/Seller/Admin Next.js boot
+- Socket.IO browser delivery
+- COD end-to-end stateful flow in a running database
+- MoMo/VNPAY sandbox callback execution
+
+LOCAL COMPLETION GATE
+1. Copy .env.example to .env
+2. npm install
+3. Commit the generated package-lock.json
+4. docker compose up -d
+5. npm run typecheck
+6. npm run build
+7. npm run seed --workspace services/api
+8. npm run dev
+9. npm run runtime:smoke
+10. Run the browser E2E checklist in docs/RUNTIME_INTEGRATION.md

@@ -1,0 +1,37 @@
+XIII Marketplace — Staging/Deploy verification
+
+Implemented:
+- isolated .env.staging template
+- single-host private Mongo replica set + Redis staging Compose topology
+- API/Buyer/Seller/Admin health checks
+- host-routed Nginx staging template with WebSocket proxying
+- release SHA injected into API health response as APP_RELEASE
+- external smoke verifies the expected release id, not just HTTP availability
+- Nginx is force-recreated after app activation/rollback so Docker upstream DNS is refreshed
+- staging preflight with secret/domain/CORS/replica-set validation
+- non-destructive external staging smoke test
+- deploy script with immutable local image tags, previous-tag tracking and automatic app rollback on failed activation
+- explicit rollback script; database data is never rolled back automatically
+- CI workflow for verifiers + typecheck + build + Playwright E2E
+- manual protected staging deploy workflow using pinned SSH known_hosts
+- staging deployment guide and go-live checklist
+
+Verified in generation environment:
+PASS node --check for new JavaScript tools
+PASS bash -n for deploy/rollback scripts
+PASS static staging/deploy verifier
+PASS runtime-readiness static verifier
+PASS E2E structure verifier
+PASS all existing dependency-free domain verifiers (run after staging changes)
+PASS archive integrity after packaging
+
+Not verified in generation environment:
+- docker compose config/up (Docker unavailable)
+- npm install/typecheck/build (registry/DNS unavailable here)
+- GitHub Actions execution
+- public DNS/TLS routing
+- actual staging server deployment
+- Playwright browser execution
+- MoMo/VNPAY sandbox callbacks
+
+A real staging release must not be treated as successful until staging:preflight, dependency build/typecheck, e2e:stack and staging:smoke all pass on infrastructure with Docker and network access.

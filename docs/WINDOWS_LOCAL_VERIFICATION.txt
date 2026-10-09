@@ -1,0 +1,30 @@
+XIII Marketplace — Windows Local Runner Verification
+Generated: 2026-10-07
+
+Static verification performed in the artifact environment:
+- All existing business/source verifier scripts: PASS
+- Runtime-readiness static checks: PASS
+- Browser E2E structure verifier: PASS
+- Staging/deploy verifier: PASS
+- Windows local runner verifier: PASS
+- Forbidden runtime directories/node_modules/dist/diagnostics: absent
+- Secret .env: not packaged
+- Source TS/TSX files: 283
+- Backend API TypeScript LOC: 8158
+- Total packaged source files before archive metadata: 437
+
+Windows runner assets:
+- CHECK_XIII_WINDOWS.bat
+- RUN_XIII_WINDOWS.bat
+- DIAGNOSE_XIII_WINDOWS.bat
+- STOP_XIII_INFRA.bat
+- RESET_XIII_LOCAL_DATA.bat
+- TEST_XIII_E2E_WINDOWS.bat
+- scripts/windows/preflight.ps1
+- scripts/windows/start-local.ps1
+- scripts/windows/diagnose-local.ps1
+- scripts/windows/stop-infra.ps1
+- docs/LOCAL_WINDOWS_RUNBOOK.md
+
+Important limitation:
+PowerShell/Docker/browser runtime could NOT be executed inside the artifact environment because it is not a Windows machine with Docker Desktop and the prior environment could not reach npm registry. Therefore this is not a claim that Windows runtime E2E has already passed. The runner is designed to execute those checks on the user's Windows machine and produce a redacted diagnostics file if a runtime error occurs.

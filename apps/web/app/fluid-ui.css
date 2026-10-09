@@ -1,0 +1,84 @@
+/* Adapted from MengTo/threeui Launch Button (MIT); see docs/licenses/THREEUI-BUTTONS-LICENSE.txt.
+   Raised rim, layered gradients, diffuse glow and a physical press. */
+html body#top :is(.product-card-tools>button,.product-card-tools>a,.product-bag,.wishlist-button,.street-button,.hero-cta,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.preview-grid .street-button,.outfit-search button,.outfit-stage-toolbar button,.outfit-tabs button,.avatar-options button,.outfit-save button,.outfit-slot>button,.motion-toggle){
+ --fluid-ease:cubic-bezier(.22,.8,.22,1);border-radius:999px;position:relative;
+ background-image:linear-gradient(180deg,#ffffff20,#ffffff00 62%,#00000012);
+ box-shadow:inset 0 1px 0 #ffffff45,0 4px 0 #15191e2b,0 10px 22px #15191e16;
+ transition:translate 300ms var(--fluid-ease),scale 300ms var(--fluid-ease),box-shadow 300ms var(--fluid-ease),background-color 240ms ease,color 240ms ease,border-color 240ms ease;
+ touch-action:manipulation;transform:none;
+}
+html body :is(.outfit-tabs button,.avatar-options button){background-color:#fafaf7;color:#333942;border-color:#d6d9d3;min-height:44px;padding:10px 20px;font-weight:600}
+html body :is(.outfit-tabs button,.avatar-options button)[aria-pressed=true]{background-color:#222830;border-color:#222830;color:white;box-shadow:inset 0 1px 0 #ffffff30,0 4px 0 #0a0d12,0 10px 24px #15191e30}
+html body .icon-link{border-radius:50%;background:linear-gradient(180deg,#fff,#f1f2ee);border:1px solid #e1e3db;box-shadow:inset 0 1px 0 #fff,0 3px 0 #d8dbd2,0 7px 14px #15191e0c;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+@media(hover:hover) and (pointer:fine){
+ html[data-motion=on] body#top :is(.product-card-tools>button,.product-card-tools>a,.product-bag,.wishlist-button,.street-button,.hero-cta,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.outfit-search button,.outfit-stage-toolbar button,.outfit-tabs button,.avatar-options button,.outfit-save button,.outfit-slot>button,.motion-toggle,.icon-link):not(:disabled):not([aria-disabled=true]):hover{
+  translate:0 -3px;scale:1.025;box-shadow:inset 0 1px 0 #ffffff55,0 6px 0 #15191e30,0 16px 28px #15191e26;
+ }
+}
+html[data-motion=on] body#top :is(.product-card-tools>button,.product-card-tools>a,.product-bag,.wishlist-button,.street-button,.hero-cta,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.outfit-search button,.outfit-stage-toolbar button,.outfit-tabs button,.avatar-options button,.outfit-save button,.outfit-slot>button,.motion-toggle,.icon-link):not(:disabled):not([aria-disabled=true]):active{
+ translate:0 3px;scale:.985;box-shadow:inset 0 2px 5px #00000020,0 1px 0 #15191e30,0 4px 9px #15191e15;transition-duration:90ms;
+}
+html body button:disabled{translate:none!important;scale:none!important;box-shadow:none;cursor:not-allowed}
+.dressing-room{display:grid;grid-template-columns:minmax(240px,1.1fr) minmax(250px,1fr);gap:30px;margin-bottom:32px}
+.avatar-scene{min-width:0;border:1px solid #dde0d6;border-radius:32px;background:radial-gradient(ellipse at 50% 30%,#fff,#e3e8dc);position:relative;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-shadow:inset 0 2px 5px #fff,0 20px 50px #28362c0d}
+.mannequin-view-toggle{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid #d9d6dc;border-radius:999px;background:#fff9}
+.mannequin-view-toggle button{min-height:32px;padding:7px 13px!important;border:0!important;border-radius:999px;background:transparent!important;color:#555!important;font-family:inherit;font-size:11px;font-weight:600;line-height:1;cursor:pointer}
+.mannequin-view-toggle button[aria-pressed=true]{background:#171717!important;color:#fff!important;box-shadow:0 2px 6px #0002}
+.avatar-scene-label{align-self:flex-start;font:10px monospace;letter-spacing:.16em;color:#56624c;padding:24px 24px 0}
+.outfit-avatar{display:block;max-width:100%;width:340px;height:auto;max-height:560px;filter:drop-shadow(0 10px 8px #0000000b)}
+.avatar-rotation-shell{--avatar-rotate-y:0deg;--avatar-rotate-x:0deg;position:relative;display:grid;place-items:center;width:min(100%,390px);min-height:480px;perspective:1050px;touch-action:pan-y;cursor:grab;outline:none;user-select:none;-webkit-user-select:none}
+.avatar-rotation-shell:active,.avatar-rotation-shell[data-dragging=true]{cursor:grabbing}
+.avatar-rotation-shell:focus-visible{outline:2px solid #313c2c;outline-offset:-6px;border-radius:20px}
+.avatar-rotation-shell .outfit-avatar{transform:rotateX(var(--avatar-rotate-x)) rotateY(var(--avatar-rotate-y));transform-style:preserve-3d;transition:filter .25s ease;will-change:transform;pointer-events:none}
+.outfit-mannequin-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+.mannequin-3d{touch-action:pan-y}
+.mannequin-3d[data-dragging=true] .outfit-mannequin-canvas{filter:drop-shadow(0 14px 12px #0002)}
+.avatar-rotation-shell[data-dragging=true] .outfit-avatar{transition:none;filter:drop-shadow(0 20px 16px #0002)}
+.avatar-rotate-hint{position:absolute;bottom:8px;left:50%;translate:-50% 0;display:flex;align-items:center;gap:8px;white-space:nowrap;padding:8px 12px;border:1px solid #ffffffc7;border-radius:999px;background:#ffffffa8;color:#384036;font:10px/1.2 monospace;backdrop-filter:blur(12px);pointer-events:none}
+.avatar-rotate-hint span{font-size:15px;animation:rotate-hint 2.2s ease-in-out infinite}
+@keyframes rotate-hint{50%{transform:rotate(24deg) translateX(2px)}}
+.avatar-scene>p{text-align:center;font-size:12px;padding:0 22px 16px;line-height:1.6;color:#56604e}
+.avatar-controls{padding:18px 4px;min-width:0}.avatar-controls h2{font-size:28px;letter-spacing:-.04em;margin:10px 0}.avatar-controls>p{font-size:13px;color:#626866;line-height:1.7}
+.avatar-controls fieldset{border:0;padding:0;margin:22px 0;min-width:0}.avatar-controls legend{font-size:12px;font-weight:700;margin-bottom:10px}
+.avatar-options{display:flex;flex-wrap:wrap;gap:10px}.avatar-options button{border:1px solid #ccc;cursor:pointer}.skin-swatch{width:22px;height:22px;display:block;border-radius:50%;border:1px solid #0002}
+.equipped-chips{display:grid;gap:10px;margin-top:25px}.equipped-chips button{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #ccd3c7;border-radius:16px;padding:12px;background:#f9faf5;cursor:pointer;min-width:0}
+.equipped-chips button[aria-pressed=true]{border-color:#5d7344;background:#e7eddb}.equipped-chips span{font-size:12px;white-space:nowrap;font-weight:700}.equipped-chips small{overflow-wrap:anywhere;font-size:11px;color:#656960}
+.avatar-disclaimer{display:block;color:#6a7168;line-height:1.7;font-size:11px;margin-top:22px}
+html body .outfit-board{border-radius:32px;background:#f4f5ef;border-color:#e0e2d9;padding:28px}.outfit-slots{border-top:1px solid #dfe3d7;padding-top:24px}.outfit-slot{background:#fff;border:1px solid #e0e3d9;border-radius:22px;padding:14px}.outfit-slot[data-selected=true]{border-color:#a6b18f}.outfit-slot .product-visual{border-radius:16px;overflow:hidden}.outfit-slot .outfit-empty{border-radius:16px;background:#f7f8f1}.outfit-slot .outfit-empty[aria-pressed=true]{border-color:#667b43;color:#405c20}
+.outfit-product-grid button{border-radius:24px;background:#fff;box-shadow:0 7px 24px #19291b08;padding:16px}.outfit-product-grid img{border-radius:16px}.outfit-product-grid small{color:#526934;font-weight:bold}.outfit-tabs{gap:12px}.outfit-search input,.outfit-save input{border-radius:16px;min-height:46px}
+.outfit-save{margin-top:30px;border-top:1px solid #dfe3d7;padding-top:24px}.outfit-save>label{display:block;font-size:13px;font-weight:700;margin-bottom:12px}.outfit-save>div{display:flex;gap:12px;flex-wrap:wrap}.outfit-save input{flex:1;min-width:0;border:1px solid #cdd3c4;background:white;padding:12px;font:inherit;font-size:13px}.outfit-save>small{display:block;font-size:11px;color:#66705e;margin-top:12px}.outfit-save ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:12px}.outfit-save li{display:flex;gap:6px;max-width:100%}.outfit-save li button{min-height:44px;border:1px solid #cdd3c4;padding:10px 16px;font-size:12px;max-width:100%;overflow-wrap:anywhere;cursor:pointer;background:#fafbf5}
+@media(max-width:750px){.avatar-rotation-shell{min-height:410px}.avatar-rotation-shell .outfit-avatar{width:min(310px,100%)}}
+@media(prefers-reduced-motion:reduce){.avatar-rotation-shell .outfit-avatar,.avatar-rotate-hint span{transition:none!important;animation:none!important}}
+@media(max-width:850px){.fashion-game .avatar-rotation-shell{min-height:220px;width:100%}.fashion-game .avatar-rotate-hint{bottom:0;font-size:8px;padding:6px 9px}}
+.avatar-garment[data-focused=true]{filter:drop-shadow(0 0 5px #7f9957)}
+html[data-motion=on] .avatar-garment[data-selected=true]{transform-origin:center;transform-box:fill-box;animation:garment-on 360ms cubic-bezier(.22,.8,.22,1) both}
+@keyframes garment-on{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:750px){.dressing-room{grid-template-columns:1fr;gap:12px}.avatar-controls{padding:8px 0}.outfit-avatar{width:270px;max-height:430px}.avatar-scene-label{padding:18px 18px 0}.outfit-board{border-radius:24px!important;padding:16px!important}.avatar-controls h2{font-size:24px}.outfit-slot{padding:10px}.outfit-save input{flex-basis:100%}.outfit-save .street-button{width:100%}.outfit-tabs button,.avatar-options button{padding:10px 15px!important}.site-actions{gap:8px}.outfit-search button{margin-bottom:5px}}
+html[data-motion=off] body#top :is(.product-card-tools>button,.product-card-tools>a,.product-bag,.wishlist-button,.street-button,.hero-cta,.detail-add,.detail-buy,.cart-checkout,.cart-primary-link,.checkout-place,.outfit-search button,.outfit-stage-toolbar button,.outfit-tabs button,.avatar-options button,.outfit-save button,.outfit-slot>button,.motion-toggle,.icon-link){translate:none;scale:none;transition:none}
+@media(prefers-reduced-motion:reduce){html body .avatar-garment{animation:none!important}html body :is(button,.product-card-tools>button,.product-card-tools>a,.product-bag,.wishlist-button,.street-button,.hero-cta,.icon-link){transition:none!important;translate:none!important;scale:none!important}}
+/* XIII Dress Up — a catalog-backed two-dimensional dressing room. */
+.fashion-game{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:28px;align-items:start}
+.fashion-game .outfit-board{min-width:0;padding:20px!important;background:#f4f2ee!important}
+.fashion-game .dressing-room{display:block;position:relative;margin:0}
+.fashion-game .avatar-scene{background:radial-gradient(ellipse at 50% 35%,#fff 0%,#ece8ef 60%,#dedfe9 100%);border:1px solid #e0dce5;border-radius:28px;overflow:hidden;position:relative}
+.fashion-game .avatar-scene:before{content:'';position:absolute;inset:25px;border:1px solid #fff9;border-radius:90px 90px 20px 20px;pointer-events:none}
+.fashion-game .game-avatar{height:490px;width:100%;max-height:none;display:block;position:relative;margin:0 auto}
+.fashion-game .avatar-scene p{margin:0;padding:0 15px 18px;font-size:12px;position:relative}
+.fashion-game .avatar-scene-label{position:absolute;top:8px;left:8px;z-index:1}
+.fashion-game .avatar-controls{padding:18px 0 0}.fashion-game .avatar-customize{width:100%;display:flex;justify-content:space-between;padding:14px 18px;border:1px solid #d9d4df;border-radius:18px;background:#fff;font:inherit;font-weight:600;cursor:pointer;min-height:48px}
+.fashion-game .avatar-customization{padding:18px 0}.fashion-game .avatar-controls[data-customizing=false] .avatar-customization{display:none}
+.fashion-game .avatar-controls h2{font-size:24px}.fashion-game .avatar-controls fieldset{margin:15px 0}.fashion-game .avatar-options{gap:8px}.fashion-game .avatar-options button{padding:9px 14px!important;min-height:42px;font-size:12px}
+.fashion-game .equipped-chips{display:flex;flex-wrap:wrap;margin-top:14px;gap:7px}.fashion-game .equipped-chips button{padding:8px 12px;border-radius:12px;display:flex;gap:7px;flex:1;min-width:100px;text-align:left}.fashion-game .equipped-chips small{display:none}
+.fashion-game .avatar-disclaimer{margin-top:12px;font-size:11px}
+.fashion-game .outfit-catalog{position:sticky;top:20px;padding:24px;border-radius:28px;border:1px solid #e1dce7;background:#fcfbfd;max-height:calc(100svh - 40px);overflow:auto;scrollbar-width:thin}
+.fashion-game .outfit-catalog h2{font-size:30px;margin:8px 0}.fashion-game .outfit-catalog .street-section-heading p{font-size:12px;line-height:1.7;color:#6f687b}
+.fashion-game .outfit-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.fashion-game .outfit-product-grid>button{border:1px solid #e8e2ec;padding:12px;border-radius:20px;transition:box-shadow 200ms ease,border-color 200ms ease}.fashion-game .outfit-product-grid>button:hover{border-color:#a897c3;box-shadow:0 8px 22px #57406b12}
+.fashion-game .outfit-product-grid img{aspect-ratio:1;object-fit:contain}.fashion-game .outfit-product-grid strong{font-size:12px}.fashion-game .outfit-tabs{gap:7px;flex-wrap:wrap}.fashion-game .outfit-tabs button{padding:9px 13px!important;font-size:12px}
+.fashion-game .outfit-slots{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}.fashion-game .outfit-slot{display:grid;grid-template-columns:60px 1fr;column-gap:10px;align-content:start;border-radius:18px;padding:12px}.fashion-game .outfit-slot h2{grid-column:1/-1}.fashion-game .outfit-slot .product-visual{grid-column:1;grid-row:2/6;width:60px;height:70px}.fashion-game .outfit-slot strong,.fashion-game .outfit-slot>span,.fashion-game .outfit-slot>b,.fashion-game .outfit-artwork-badge{grid-column:2;font-size:10px}.fashion-game .outfit-slot>button{grid-column:1/-1;min-height:40px}.fashion-game .outfit-slot .outfit-empty{aspect-ratio:auto;min-height:70px}
+.outfit-artwork-badge{color:#746284;font-size:10px}.fashion-game .outfit-summary{flex-wrap:wrap;gap:12px;margin-top:20px}.fashion-game .outfit-summary .street-button{flex:1;min-width:150px}.wardrobe-more{margin-top:20px;width:100%}
+@media(max-width:850px){.fashion-game{grid-template-columns:minmax(0,1fr);gap:20px}.fashion-game .outfit-catalog{position:static;max-height:none;padding:18px}.fashion-game .game-avatar{height:390px}.fashion-game .outfit-board{padding:16px!important}.fashion-game .outfit-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.fashion-game .outfit-slot{grid-template-columns:45px 1fr;padding:10px}.fashion-game .outfit-slot .product-visual{width:45px;height:60px}.fashion-game .outfit-tabs button{flex:1}.fashion-game .avatar-scene{border-radius:24px}.fashion-game .avatar-scene-label{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.fashion-game .outfit-product-grid>button{transition:none}}
+@media(max-width:850px){.fashion-game .outfit-board{display:contents}.fashion-game .outfit-stage-toolbar{margin-bottom:-10px}.fashion-game .dressing-room{position:sticky;top:0;z-index:3;background:#f5f3f0;border-radius:20px;padding:8px;box-shadow:0 8px 22px #2520330d}.fashion-game .game-avatar{height:220px}.fashion-game .avatar-scene p{display:none}.fashion-game .avatar-scene-label{padding:6px;font-size:8px}.fashion-game .avatar-controls{padding-top:8px}.fashion-game .avatar-customize{min-height:40px;padding:9px 14px;font-size:12px}.fashion-game .avatar-customization{max-height:35svh;overflow:auto;padding:12px 0}.fashion-game .equipped-chips{margin-top:8px;gap:5px}.fashion-game .equipped-chips button{min-width:50px;padding:6px 8px;min-height:30px}.fashion-game .equipped-chips span{font-size:10px}.fashion-game .avatar-disclaimer{margin-top:6px;font-size:9px;line-height:1.4}.fashion-game .outfit-slots{margin-top:0}.fashion-game .outfit-summary{margin-top:0}.fashion-game .outfit-save{margin-top:0}.fashion-game .outfit-catalog{overflow:visible}}
+
+@media(max-width:850px){body:has(.fashion-game) .site-header{position:relative}}
+@media(min-width:851px){.fashion-game .outfit-catalog{top:155px;max-height:calc(100svh - 175px)}}

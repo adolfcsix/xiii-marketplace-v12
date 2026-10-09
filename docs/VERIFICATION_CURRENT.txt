@@ -1,0 +1,52 @@
+XIII Marketplace — Current verification summary
+
+PASS — source/static/flow verifiers:
+- Phase 1 foundation
+- Payment
+- Buyer Orders
+- Seller Orders
+- Seller Catalog + Inventory
+- Admin Product Review
+- After Sales / Returns / Refunds / Disputes
+- Reviews / Ratings
+- Realtime Chat + Notifications
+- Seller Finance
+- Seller Promotions
+- Analytics / Reports
+- CMS / Homepage
+- Access Control / Audit
+- Admin Users / Seller Applications / Shop Settings
+- Admin Orders / Payments / Marketplace Settings
+- Production Hardening
+- Runtime Readiness
+- Browser E2E suite structure
+- Staging / CI / deploy / rollback structure
+
+Staging additions:
+- .env.staging policy and preflight
+- private Mongo replica-set + Redis Compose topology
+- release-tagged images and API health release id
+- internal readiness + external HTTPS smoke test
+- automatic application rollback on failed activation
+- manual rollback to previous image tag
+- GitHub CI and protected manual staging deploy workflows
+- go-live checklist
+
+Generation-environment runtime limits:
+- Docker unavailable
+- npm registry/DNS unavailable
+- dependency build/typecheck not executed here
+- Playwright browser E2E not executed here
+- no real staging host/DNS/TLS/provider credentials were available
+
+Authoritative next gate on normal infrastructure:
+  npm install
+  npm run typecheck
+  npm run build
+  npm run e2e:install
+  npm run e2e:stack
+  cp .env.staging.example .env.staging
+  # configure real staging values
+  npm run staging:preflight
+  npm run staging:deploy
+  npm run staging:smoke

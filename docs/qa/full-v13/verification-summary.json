@@ -1,0 +1,769 @@
+{
+  "version": "v13",
+  "browser_unique_cases": 116,
+  "browser_executions": 122,
+  "browser_runs": [
+    {
+      "label": "API + database + browser",
+      "stats": {
+        "startTime": "2026-10-08T04:36:14.455Z",
+        "duration": 229194.467,
+        "expected": 58,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "orders restore URL filter, reject stale responses and recover from read failure",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "order cancellation supports Escape, retains reason on failure and blocks duplicate submissions",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "reviews ignore previous tab responses and offer a working retry after network errors",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "chat changes threads without stale messages and preserves each thread draft",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "chat displays confirmed sends without socket, deduplicates rapid clicks and retains newer typing",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "mobile chat keeps long messages inside the viewport and conversations remain selectable",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "authenticated account pages hydrate consistently on direct navigation",
+          "passed": true
+        },
+        {
+          "file": "account-reliability.spec.ts",
+          "title": "dismissing the reason prompt in order detail never cancels the order",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "buyer logout revokes refresh token, clears browser session and returns to login",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "seller logout revokes refresh token and disconnects local session",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "admin logout revokes refresh token and clears admin session",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "invalid refresh token clears buyer session and redirects to login",
+          "passed": true
+        },
+        {
+          "file": "marketplace-flow.spec.ts",
+          "title": "buyer creates a COD order from product detail",
+          "passed": true
+        },
+        {
+          "file": "marketplace-flow.spec.ts",
+          "title": "seller fulfils the created suborder through delivery",
+          "passed": true
+        },
+        {
+          "file": "marketplace-flow.spec.ts",
+          "title": "buyer confirms receipt and leaves a verified-purchase review",
+          "passed": true
+        },
+        {
+          "file": "marketplace-flow.spec.ts",
+          "title": "admin can trace the completed order and review",
+          "passed": true
+        },
+        {
+          "file": "security-smoke.spec.ts",
+          "title": "protected buyer page redirects unauthenticated users to login state",
+          "passed": true
+        },
+        {
+          "file": "security-smoke.spec.ts",
+          "title": "seller and admin protected pages do not expose data without session",
+          "passed": true
+        },
+        {
+          "file": "street-depth.spec.ts",
+          "title": "product depth tracks mouse, clears on leave and preserves wishlist and navigation",
+          "passed": true
+        },
+        {
+          "file": "street-depth.spec.ts",
+          "title": "global motion off and reduced motion neutralize depth",
+          "passed": true
+        },
+        {
+          "file": "street-depth.spec.ts",
+          "title": "orb tuning changes actual shader glow and resets selected values",
+          "passed": true
+        },
+        {
+          "file": "street-depth.spec.ts",
+          "title": "touch scrolling does not tilt cards and mobile controls fit",
+          "passed": true
+        },
+        {
+          "file": "street-depth.spec.ts",
+          "title": "editorial depth leaves shopping links and product zoom usable",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "cart confirmation supports cancel and recovers from a failed deletion",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "successful clear stays empty even when later cart reads fail",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "notification mutations handle failures and repeated clicks without unhandled errors",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "notifications recover from a failed initial load on mobile",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "rapid chat clicks create one request and failures allow retry",
+          "passed": true
+        },
+        {
+          "file": "street-reliability.spec.ts",
+          "title": "shop links filter by shop identity and unknown shops return no products",
+          "passed": true
+        },
+        {
+          "file": "street-shopping.spec.ts",
+          "title": "product gallery removes duplicate photos, opens a modal and restores keyboard focus",
+          "passed": true
+        },
+        {
+          "file": "street-shopping.spec.ts",
+          "title": "individual search filter removal preserves the other selections",
+          "passed": true
+        },
+        {
+          "file": "street-shopping.spec.ts",
+          "title": "catalog, gallery and zoom fit small touch screens",
+          "passed": true
+        },
+        {
+          "file": "street-shopping.spec.ts",
+          "title": "tablet filters collapse and remain usable at 680px",
+          "passed": true
+        },
+        {
+          "file": "street-ui.spec.ts",
+          "title": "home renders a live catalog, new images and working collection filters",
+          "passed": true
+        },
+        {
+          "file": "street-ui.spec.ts",
+          "title": "collection recovers from a failed request and stale replies cannot replace the chosen filter",
+          "passed": true
+        },
+        {
+          "file": "street-ui.spec.ts",
+          "title": "motion can be paused, persists across reload, and follows reduced-motion settings",
+          "passed": true
+        },
+        {
+          "file": "street-ui.spec.ts",
+          "title": "mobile home and both auth modes fit without yellow panels or hidden controls",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "ThreeUI renders locally, animates and does not block shopping links",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "turning motion off removes the renderer and keeps the preference on reload",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "offscreen and hidden pages release the frame and recreate it when visible",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "reduced motion skips the effect download; live preference changes remove it",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "unavailable decorative source leaves the catalog and navigation usable",
+          "passed": true
+        },
+        {
+          "file": "threeui-motion.spec.ts",
+          "title": "mobile resizes the canvas without horizontal overflow or focusable decoration",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "3D orb draws WebGL pixels, changes palette and keeps its shopping link usable",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "pause, offscreen and hidden tab release the WebGL renderer",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "reduced motion uses the still sphere without loading the WebGL component",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "unsupported WebGL still leaves the sphere and controls usable",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "WebGL context loss falls back and can restart",
+          "passed": true
+        },
+        {
+          "file": "threeui-orb.spec.ts",
+          "title": "3D section and controls fit a 320px screen",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "search without price filters shows products and wishlist persists after reload",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "mobile catalog fits screen and wishlist is reachable",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "rapid add-to-cart clicks create one mutation",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "checkout disables placing an order while updated shipping quote is pending",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "rotated refresh token is unique and previous token cannot be replayed",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "login rejects a protocol-relative redirect target",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "home promo text and call to action do not overlap",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "buyer can register and use the password visibility control",
+          "passed": true
+        },
+        {
+          "file": "ux-regressions.spec.ts",
+          "title": "buyer can cancel a COD order and see the cancelled status",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "label": "Media + shopping + motion fixtures",
+      "stats": {
+        "startTime": "2026-10-08T04:40:05.148Z",
+        "duration": 140139.251,
+        "expected": 56,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Seller corrects empty MIME and mismatched suffix without changing bytes; allows selecting same file again",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Seller retains successful files and continues after invalid files in a batch",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Seller rejects corrupt, HEIC and oversized input before presign",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Seller reports storage failure and permits retry",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Admin applies banner, mobile banner, category and brand images to the correct fields and purposes",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "all five supported formats decode and preserve their complete original bytes, including animated GIF",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "Admin enforces per-purpose category and brand size limits before requesting storage",
+          "passed": true
+        },
+        {
+          "file": "image-uploads.spec.ts",
+          "title": "saving and changing the Admin upload destination stay locked until the image finishes",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "crop and rotation export the preview geometry and preserve transparent pixels",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "crop settings persist per file and the original upload remains byte-identical",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "product image drag, accessible ordering and deletion save exactly the visible order",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "shop logo and banner upload into editable URL fields and the shop save payload",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "SKU image upload saves to its own SKU without appending product gallery images",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "review uploads attach media to the correct order item and enforce the six-image limit",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "return evidence upload keeps existing links and submits only the remaining attachments",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "mobile editor fits the viewport and discarding a pending selection unlocks saving",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "Admin edited mobile banner updates its own field and blocks switching destinations while pending",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "editor retries only failed files and preserves successful attachments",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "return upload rechecks remaining attachment slots if manual evidence links change after selection",
+          "passed": true
+        },
+        {
+          "file": "image-workflow.spec.ts",
+          "title": "shop viewers cannot choose or upload logo and banner files",
+          "passed": true
+        },
+        {
+          "file": "interface-motion.spec.ts",
+          "title": "logo depth follows mouse, resets with motion off and keeps home navigation",
+          "passed": true
+        },
+        {
+          "file": "interface-motion.spec.ts",
+          "title": "dimensional swatches select the actual color SKU and stay locked during cart writes",
+          "passed": true
+        },
+        {
+          "file": "interface-motion.spec.ts",
+          "title": "cart loading pauses offscreen and in hidden tab, then resolves to an accessible empty state",
+          "passed": true
+        },
+        {
+          "file": "interface-motion.spec.ts",
+          "title": "reduced motion keeps state geometry static and mobile controls fit",
+          "passed": true
+        },
+        {
+          "file": "interface-motion.spec.ts",
+          "title": "logged-in cart flight ends at cart, never message or notification links",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "campaign layers have different offsets and reset with motion off",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "depth carousel uses actual adjacent photos and preserves lightbox keyboard navigation",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "mobile swipe changes photo without opening lightbox or blocking vertical scroll",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "Quick View flight waits for success, sits above dialog and keeps focus and cleanup",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "failed cart write has no flight and retry still adds once",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "reduced motion has static gallery and no cart flight",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "outfit composition focuses selected SKU, preserves saved data and fits mobile",
+          "passed": true
+        },
+        {
+          "file": "shopping-motion.spec.ts",
+          "title": "outfit partial success celebrates only successful writes and retry skips them",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "Quick View selects a live variant, adds once and restores focus on Escape",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "Quick View recovers from fetch failure and size advice applies the shop chart",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "product size advice handles missing charts without inventing a size",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "outfit persists selected variants, totals live prices and retries only failed items",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "outfit detects changed prices before posting cart items",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "unavailable saved selections are explained and untouched drafts survive failed loading",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "outfit rejects duplicate variants and guests go to login with the draft intact",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "mobile outfit and Quick View fit and remain operable",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "Seller saves a chart without losing other attributes and rejects reversed ranges",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "editing an outfit item retains its selected variant",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "editing another slot preserves saved references that could not reload",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "retry ignores stock changes of items already added successfully",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "size selection is locked while a Quick View cart request is pending",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "pointer movement in Quick View does not tilt the card behind the modal",
+          "passed": true
+        },
+        {
+          "file": "shopping-tools.spec.ts",
+          "title": "a stalled preview request times out with a retry message",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "mobile auto caps the real framebuffer to 1x while drawing the original sphere shader",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "quality switching resizes the same GPU program and survives reload",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "speed changes and pause/resume keep shader phase continuous",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "mouse interaction rotates the shader surface and eases back to center on leaving",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "light mode limits actual shader draw calls and leaves shopping controls operable",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "opening Quick View clears depth immediately without needing another pointer movement",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "Constellation light mode caps retina buffers and throttles the authored Canvas loop",
+          "passed": true
+        },
+        {
+          "file": "threeui-optimized.spec.ts",
+          "title": "unmounted Orb contexts are released and deliberate pause does not trigger a retry error",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "label": "Final auth/realtime verification",
+      "stats": {
+        "startTime": "2026-10-08T04:47:14.118Z",
+        "duration": 56949.435,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "auth-session.spec.ts",
+          "title": "buyer logout revokes refresh token, clears browser session and returns to login",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "seller logout revokes refresh token and disconnects local session",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "admin logout revokes refresh token and clears admin session",
+          "passed": true
+        },
+        {
+          "file": "auth-session.spec.ts",
+          "title": "invalid refresh token clears buyer session and redirects to login",
+          "passed": true
+        },
+        {
+          "file": "realtime-session.spec.ts",
+          "title": "buyer realtime refreshes an expired token and reconnects without losing the browser session",
+          "passed": true
+        },
+        {
+          "file": "realtime-session.spec.ts",
+          "title": "seller realtime refreshes an expired token and reconnects without losing the browser session",
+          "passed": true
+        },
+        {
+          "file": "security-smoke.spec.ts",
+          "title": "protected buyer page redirects unauthenticated users to login state",
+          "passed": true
+        },
+        {
+          "file": "security-smoke.spec.ts",
+          "title": "seller and admin protected pages do not expose data without session",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "unit_tests": 69,
+  "live_integration_tests": 7,
+  "static_verification_checks": [
+    {
+      "name": "verify:phase1",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:payment",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:orders",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:seller-orders",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:seller-catalog",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:admin-products",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:after-sales",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:reviews",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:realtime",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:finance",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:promotions",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:analytics",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:cms",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:access",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:operations",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:admin-ops-settings",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:hardening",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:runtime-readiness",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:e2e",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:staging",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:windows-local",
+      "exitCode": 0
+    },
+    {
+      "name": "verify:auth-session",
+      "exitCode": 0
+    }
+  ],
+  "typecheck": "4 workspaces passed from clean generated-type state",
+  "production_build": "Web, Seller, Admin, API passed",
+  "audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "environment": {
+    "database": "MongoDB 7.0.14 single-node replica set",
+    "storage": "local S3-compatible server with real signed multipart upload",
+    "redis": "memory rate-limit fallback; Redis not started",
+    "browser": "Chromium 153 + SwiftShader software WebGL"
+  },
+  "limitations": [
+    "No real MoMo/VNPAY merchant transaction; sandbox credentials not supplied",
+    "No real mobile hardware FPS measurement",
+    "Media editor and shopping failure scenarios use fixtures and route mocks"
+  ]
+}

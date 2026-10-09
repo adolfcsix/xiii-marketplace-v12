@@ -1,0 +1,183 @@
+name: xiii-staging
+
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    volumes:
+      - mongo_staging:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+    networks: [backend]
+    security_opt: ["no-new-privileges:true"]
+
+  mongo-init-replica:
+    image: mongo:7
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: "no"
+    entrypoint:
+      - bash
+      - -lc
+      - >-
+        mongosh --host mongodb:27017 --quiet --eval '
+        try { rs.status(); }
+        catch (e) { rs.initiate({_id:"rs0",members:[{_id:0,host:"mongodb:27017"}]}); }
+        '
+    networks: [backend]
+    security_opt: ["no-new-privileges:true"]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["sh", "-lc", "exec redis-server --appendonly yes --requirepass '$${REDIS_PASSWORD}'"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis_staging:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a '$${REDIS_PASSWORD}' ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks: [backend]
+    security_opt: ["no-new-privileges:true"]
+
+  api:
+    image: ${IMAGE_PREFIX:-xiii-marketplace}/api:${IMAGE_TAG:-staging}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    restart: unless-stopped
+    env_file: ${STAGING_ENV_FILE:-.env.staging}
+    environment:
+      APP_RELEASE: ${IMAGE_TAG:-staging}
+    expose: ["4000"]
+    depends_on:
+      mongo-init-replica:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/v1/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [backend, frontend]
+    security_opt: ["no-new-privileges:true"]
+
+  web:
+    image: ${IMAGE_PREFIX:-xiii-marketplace}/web:${IMAGE_TAG:-staging}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.next
+      args:
+        APP: web
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL}
+        NEXT_PUBLIC_WEB_URL: ${WEB_URL}
+        NEXT_PUBLIC_SELLER_URL: ${SELLER_URL}
+    restart: unless-stopped
+    expose: ["3000"]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [frontend]
+    security_opt: ["no-new-privileges:true"]
+
+  seller:
+    image: ${IMAGE_PREFIX:-xiii-marketplace}/seller:${IMAGE_TAG:-staging}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.next
+      args:
+        APP: seller
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL}
+        NEXT_PUBLIC_WEB_URL: ${WEB_URL}
+        NEXT_PUBLIC_SELLER_URL: ${SELLER_URL}
+    restart: unless-stopped
+    expose: ["3000"]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [frontend]
+    security_opt: ["no-new-privileges:true"]
+
+  admin:
+    image: ${IMAGE_PREFIX:-xiii-marketplace}/admin:${IMAGE_TAG:-staging}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.next
+      args:
+        APP: admin
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL}
+        NEXT_PUBLIC_WEB_URL: ${WEB_URL}
+        NEXT_PUBLIC_SELLER_URL: ${SELLER_URL}
+    restart: unless-stopped
+    expose: ["3000"]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [frontend]
+    security_opt: ["no-new-privileges:true"]
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_healthy }
+      web: { condition: service_healthy }
+      seller: { condition: service_healthy }
+      admin: { condition: service_healthy }
+    environment:
+      STAGING_WEB_HOST: ${STAGING_WEB_HOST}
+      STAGING_SELLER_HOST: ${STAGING_SELLER_HOST}
+      STAGING_ADMIN_HOST: ${STAGING_ADMIN_HOST}
+      STAGING_API_HOST: ${STAGING_API_HOST}
+    ports:
+      - "80:80"
+    volumes:
+      - ./ops/nginx/staging.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./ops/nginx/proxy_params:/etc/nginx/proxy_params:ro
+    networks: [frontend]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+    security_opt: ["no-new-privileges:true"]
+
+networks:
+  backend:
+    internal: true
+  frontend:
+
+volumes:
+  mongo_staging:
+  redis_staging:

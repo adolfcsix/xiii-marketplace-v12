@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {homeProductSections,loadHome} from '../apps/web/lib/home-data';
+const originalFetch=globalThis.fetch;
+const product={_id:'product-1',name:'Hoodie',slug:'hoodie',primaryVariant:{price:499000}};
+const ok=(data:unknown)=>new Response(JSON.stringify({success:true,data}),{headers:{'Content-Type':'application/json'}});
+test('successful empty CMS still supplies a catalog section',()=>{assert.equal(homeProductSections({sections:[],banners:{hero:[]}})[0].type,'PRODUCT_GRID');assert.equal(homeProductSections(null).length,1);});
+test('CMS with decorative sections only still supplies products',()=>{assert.equal(homeProductSections({sections:[{_id:'hero',key:'hero',title:'Hero',sortOrder:0,type:'HERO'}]}).length,1);});
+test('live products remain visible with an empty CMS database',async()=>{globalThis.fetch=async url=>String(url).includes('/products')?ok([product]):String(url).includes('/cms/')?ok({sections:[],banners:{hero:[]}}):ok([]);try{const home=await loadHome();assert.equal(home.products.length,1);assert.equal(home.sections.length,1);assert.equal(home.catalogError,false);}finally{globalThis.fetch=originalFetch;}});
+test('CMS outage does not hide the working product API',async()=>{globalThis.fetch=async url=>{if(String(url).includes('/cms/'))throw new Error('offline');return String(url).includes('/products')?ok([product]):ok([]);};try{const home=await loadHome();assert.equal(home.products.length,1);assert.equal(home.sections.length,1);assert.equal(home.catalogError,false);}finally{globalThis.fetch=originalFetch;}});
+test('empty catalog and API failure remain distinguishable',async()=>{globalThis.fetch=async url=>String(url).includes('/cms/')?ok({sections:[]}):ok([]);try{assert.equal((await loadHome()).catalogError,false);globalThis.fetch=async()=>{throw new Error('offline');};const failed=await loadHome();assert.equal(failed.catalogError,true);assert.deepEqual(failed.products,[]);}finally{globalThis.fetch=originalFetch;}});

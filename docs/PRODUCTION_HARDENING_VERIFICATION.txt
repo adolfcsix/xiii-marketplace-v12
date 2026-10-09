@@ -1,0 +1,42 @@
+XIII Marketplace — Production Hardening Verification
+===================================================
+
+Verified in generation environment:
+- Production hardening structure verifier: PASS
+- All previously existing business-flow verifiers: PASS
+- TypeScript/TSX transpile/parser sweep: PASS (280 source files)
+- Backend TypeScript files: 161
+- Backend TypeScript LOC: 8,157
+- JSON package manifests: PASS
+- docker-compose.yml YAML parse: PASS
+- docker-compose.prod.yml YAML parse: PASS
+- Source tree file count before archive: 397
+
+Hardening added:
+- Request IDs and structured HTTP logging
+- Helmet security headers and strict CORS allow-list
+- Redis-backed API rate limiting with bounded memory fallback
+- MongoDB + Redis readiness probe and process liveness probe
+- Production environment validation for secrets/CORS/storage
+- S3-compatible presigned POST uploads with type/size policy
+- Local MinIO development storage
+- Seller product image upload UI
+- Admin CMS/category/brand image upload UI
+- Production API/Next Dockerfiles
+- Production Nginx reverse-proxy sample
+- MongoDB backup/restore scripts
+- Production environment checker and deployment documentation
+
+NOT verified in this environment:
+- npm dependency installation: attempted but timed out
+- dependency-based `npm run typecheck` / `npm run build`
+- Docker image builds: Docker CLI is not available here
+- live MongoDB/Redis/MinIO runtime integration
+- browser E2E tests across Buyer/Seller/Admin
+- real S3/R2 upload runtime
+- payment provider sandbox certification
+- load/security/vulnerability testing
+
+Important:
+This source is production-oriented but is not represented as fully production-certified.
+See docs/PRODUCTION_HARDENING.md for deployment prerequisites and remaining launch checks.

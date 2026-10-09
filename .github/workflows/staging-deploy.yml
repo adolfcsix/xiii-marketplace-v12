@@ -1,0 +1,48 @@
+name: Deploy Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref/SHA to deploy
+        required: false
+        default: main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 40
+    steps:
+      - name: Validate deployment secrets
+        env:
+          HOST: ${{ secrets.STAGING_HOST }}
+          USER: ${{ secrets.STAGING_USER }}
+          KEY: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+          KNOWN: ${{ secrets.STAGING_KNOWN_HOSTS }}
+          PATH_ON_SERVER: ${{ secrets.STAGING_APP_PATH }}
+        run: |
+          test -n "$HOST" && test -n "$USER" && test -n "$KEY" && test -n "$KNOWN" && test -n "$PATH_ON_SERVER"
+      - name: Configure SSH
+        env:
+          KEY: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+          KNOWN: ${{ secrets.STAGING_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$KNOWN" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+      - name: Deploy exact requested ref on staging host
+        env:
+          HOST: ${{ secrets.STAGING_HOST }}
+          USER: ${{ secrets.STAGING_USER }}
+          APP_PATH: ${{ secrets.STAGING_APP_PATH }}
+          REF: ${{ inputs.ref }}
+        run: |
+          case "$REF" in *[!A-Za-z0-9._/-]*) echo "Invalid ref" >&2; exit 1;; esac
+          ssh "$USER@$HOST" "set -euo pipefail; cd '$APP_PATH'; git fetch --prune origin; TARGET=\$(git rev-parse --verify 'origin/$REF^{commit}' 2>/dev/null || git rev-parse --verify '$REF^{commit}'); git checkout --detach \"\$TARGET\"; export IMAGE_TAG=\$(git rev-parse --short=12 HEAD); bash ops/staging/deploy.sh"

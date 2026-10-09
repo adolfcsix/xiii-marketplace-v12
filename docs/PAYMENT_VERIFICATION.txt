@@ -1,0 +1,16 @@
+XIII PAYMENT SLICE
+
+Implemented:
+- Payment + PaymentEvent MongoDB schemas
+- MoMo hosted payment create adapter (HMAC-SHA256)
+- MoMo IPN signature verification
+- VNPAY 2.1.0 hosted payment URL (HMAC-SHA512)
+- VNPAY IPN checksum verification + provider response codes
+- Buyer payment status endpoint
+- Payment result UI with backend polling
+- Online order expiry sweep
+- Reserved inventory release on failure/expiry
+- Voucher usage reversal on unpaid cancellation
+- raw-response bypass for provider callback formats
+
+Credentials are not embedded. Runtime gateway testing requires the user's own sandbox merchant credentials and a public HTTPS API URL for callbacks.
